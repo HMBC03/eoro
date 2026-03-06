@@ -1,26 +1,7 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-
-async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-
-  const { data: admin } = await supabase
-    .schema("eoro")
-    .from("admin_users")
-    .select("rol, activo")
-    .eq("user_id", user.id)
-    .single();
-
-  if (!admin?.activo) redirect("/");
-  return { supabase, user, rol: admin.rol };
-}
+import { requireAdmin } from "./_lib/require-admin";
 
 // ============================================================
 // PERSONAS
@@ -129,4 +110,20 @@ export async function deleteAlerta(id: string): Promise<void> {
   const { supabase } = await requireAdmin();
   await supabase.schema("eoro").from("alertas").delete().eq("id", id);
   revalidatePath("/admin/alertas");
+}
+
+// ============================================================
+// MODULE CONFIG
+// ============================================================
+
+export async function toggleModuleVisibility(moduleKey: string, visible: boolean): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase
+    .schema("eoro")
+    .from("module_config")
+    .update({ visible, updated_at: new Date().toISOString() })
+    .eq("module_key", moduleKey);
+
+  revalidatePath("/admin/modulos");
+  revalidatePath("/");
 }

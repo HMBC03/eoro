@@ -3,11 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { APP_NAME, NAV_ITEMS } from "@/lib/constants";
+import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
+import type { NavItem } from "./LayoutShell";
 
-export function Header() {
+interface HeaderProps {
+  navItems: readonly NavItem[];
+}
+
+export function Header({ navItems }: HeaderProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -25,7 +30,7 @@ export function Header() {
 
           {/* Centered nav — pill container */}
           <nav className="hidden items-center rounded-full bg-[#f0f2f5] p-1 md:flex">
-            {NAV_ITEMS.map((item) => {
+            {navItems.map((item) => {
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
@@ -90,6 +95,7 @@ export function Header() {
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         pathname={pathname}
+        navItems={navItems}
       />
     </div>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { LayoutShell } from "@/components/layout/LayoutShell";
+import { getModuleConfig } from "@/lib/data/modulos";
+import { NAV_ITEMS } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,17 +41,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const MODULE_HREF_MAP: Record<string, string> = {
+  candidatos: "/candidatos",
+  mapa: "/mapa",
+  contratos: "/contratos",
+  conexiones: "/conexiones",
+  presupuesto: "/presupuesto",
+  historial: "/historial",
+};
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const moduleConfig = await getModuleConfig();
+  const hiddenHrefs = new Set(
+    moduleConfig
+      .filter((m) => !m.visible && MODULE_HREF_MAP[m.module_key])
+      .map((m) => MODULE_HREF_MAP[m.module_key])
+  );
+
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !hiddenHrefs.has(item.href)
+  );
+
   return (
     <html lang="es-CO">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LayoutShell>{children}</LayoutShell>
+        <LayoutShell navItems={visibleNavItems}>{children}</LayoutShell>
       </body>
     </html>
   );

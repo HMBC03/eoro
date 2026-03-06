@@ -2,16 +2,18 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { APP_NAME, NAV_ITEMS } from "@/lib/constants";
+import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import type { NavItem } from "./LayoutShell";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   pathname: string;
+  navItems: readonly NavItem[];
 }
 
-export function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose, pathname, navItems }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -51,7 +53,7 @@ export function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
         </div>
 
         <div className="px-3 py-2">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isActive =
               item.href === "/"
                 ? pathname === "/"

@@ -4,7 +4,18 @@ import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
-export function LayoutShell({ children }: { children: React.ReactNode }) {
+export interface NavItem {
+  readonly label: string;
+  readonly href: string;
+  readonly icon: string;
+}
+
+interface LayoutShellProps {
+  children: React.ReactNode;
+  navItems: readonly NavItem[];
+}
+
+export function LayoutShell({ children, navItems }: LayoutShellProps) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
 
@@ -14,7 +25,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Header />
+      <Header navItems={navItems} />
       <main className="min-h-screen">{children}</main>
       <Footer />
     </>

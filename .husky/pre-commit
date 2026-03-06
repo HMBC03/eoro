@@ -1,0 +1,49 @@
+#!/bin/sh
+echo "[OPSEC] Running security checks..."
+
+# 1. Check for hardcoded secrets (JWT tokens, API keys, passwords)
+if grep -rn --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' \
+  -E '(eyJ[A-Za-z0-9_-]{20,}|sk-[a-zA-Z0-9]{20,}|password\s*=\s*".+")' \
+  --exclude-dir=node_modules --exclude-dir=.next . 2>/dev/null; then
+  echo "[OPSEC] BLOCKED: Possible hardcoded secret detected"
+  exit 1
+fi
+
+# 1b. Check for hardcoded service role key (not via process.env)
+if grep -rn --include='*.ts' --include='*.tsx' --include='*.js' \
+  'SUPABASE_SERVICE_ROLE' \
+  --exclude-dir=node_modules --exclude-dir=.next . 2>/dev/null | grep -v 'process\.env\.' | grep -v '\.example' | grep -v '\.husky'; then
+  echo "[OPSEC] BLOCKED: Hardcoded SUPABASE_SERVICE_ROLE reference detected"
+  exit 1
+fi
+
+# 2. Check for personal email patterns
+if grep -rn --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.md' \
+  -E '@gmail\.com|@hotmail\.com|@yahoo\.com|@outlook\.com' \
+  --exclude-dir=node_modules . 2>/dev/null; then
+  echo "[OPSEC] BLOCKED: Personal email found in code"
+  exit 1
+fi
+
+# 3. Check for local absolute paths
+if grep -rn --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' \
+  -E '(/Users/|/home/[a-z]+/|C:\\\\Users\\\\)' \
+  --exclude-dir=node_modules --exclude-dir=.next . 2>/dev/null; then
+  echo "[OPSEC] BLOCKED: Local path detected"
+  exit 1
+fi
+
+# 4. Check for .env files being staged
+if git diff --cached --name-only | grep -E '^\.env($|\.)' | grep -v '\.example$'; then
+  echo "[OPSEC] BLOCKED: .env file being committed"
+  exit 1
+fi
+
+# 5. Check git author email
+AUTHOR_EMAIL=$(git config user.email)
+if echo "$AUTHOR_EMAIL" | grep -qvE '@transparenciacol\.org$'; then
+  echo "[OPSEC] WARNING: Git email is not project email: $AUTHOR_EMAIL"
+  echo "Run: git config user.email dev@transparenciacol.org"
+fi
+
+echo "[OPSEC] All checks passed."

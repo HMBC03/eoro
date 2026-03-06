@@ -1,0 +1,152 @@
+import type { Alerta } from "@/lib/types";
+
+export const mockAlertas: Alerta[] = [
+  {
+    id: "al01",
+    persona_id: "c10",
+    contrato_id: null,
+    tipo: "enriquecimiento",
+    severidad: "alta",
+    titulo: "Crecimiento patrimonial del 453% en 9 anos",
+    descripcion:
+      "El patrimonio de Andres Lopez paso de $380M en 2016 a $2.100M en 2025 (453%), con ingresos declarados que no justifican el incremento. Coincide con periodo como alcalde de Cartagena y senador.",
+    datos_soporte: {
+      patrimonio_2016: 380_000_000,
+      patrimonio_2025: 2_100_000_000,
+      crecimiento_pct: 453,
+    },
+    detectada_at: "2025-12-01",
+    verificada: true,
+  },
+  {
+    id: "al02",
+    persona_id: "c14",
+    contrato_id: null,
+    tipo: "nepotismo",
+    severidad: "alta",
+    titulo: "Tres familiares directos en cargos publicos simultaneamente",
+    descripcion:
+      "Humberto Ramirez (senador) tiene a su hermano Eduardo como exgobernador de Cordoba, a su hijo Sebastian como alcalde de Monteria, y a su cunado Luis Fernando como contratista de la Gobernacion.",
+    datos_soporte: {
+      familiares_en_cargos: 3,
+      departamento: "Cordoba",
+    },
+    detectada_at: "2025-06-15",
+    verificada: true,
+  },
+  {
+    id: "al03",
+    persona_id: "c14",
+    contrato_id: null,
+    tipo: "concentracion_contratos",
+    severidad: "alta",
+    titulo: "Cunado recibio $12.800M en contratos de la Gobernacion",
+    descripcion:
+      "Luis Fernando Ochoa, cunado del senador Ramirez, recibio 23 contratos de la Gobernacion de Cordoba durante el periodo de Eduardo Ramirez como gobernador, por un total de $12.800M.",
+    datos_soporte: {
+      contratos_count: 23,
+      valor_total: 12_800_000_000,
+      periodo: "2020-2023",
+    },
+    detectada_at: "2025-08-20",
+    verificada: true,
+  },
+  {
+    id: "al04",
+    persona_id: "c14",
+    contrato_id: null,
+    tipo: "cambio_partido",
+    severidad: "media",
+    titulo: "Cambio de partido entre elecciones 2014 y 2018",
+    descripcion:
+      "Humberto Ramirez paso del Partido Conservador al Partido de la U entre las elecciones de 2014 y 2018, y ahora regresa al Conservador para 2026.",
+    datos_soporte: {
+      partidos: ["Partido Conservador", "Partido de la U", "Partido Conservador"],
+      elecciones: [2010, 2014, 2018, 2026],
+    },
+    detectada_at: "2025-11-01",
+    verificada: true,
+  },
+  {
+    id: "al05",
+    persona_id: "c14",
+    contrato_id: null,
+    tipo: "no_reporte",
+    severidad: "alta",
+    titulo: "No ha reportado financiacion de campana 2026",
+    descripcion:
+      "A la fecha, Humberto Ramirez no ha reportado ingresos ni gastos de campana en la plataforma Cuentas Claras del CNE, a pesar de estar inscrito como candidato al Senado.",
+    datos_soporte: { fecha_corte: "2026-03-03" },
+    detectada_at: "2026-03-03",
+    verificada: true,
+  },
+  {
+    id: "al06",
+    persona_id: "c08",
+    contrato_id: null,
+    tipo: "no_reporte",
+    severidad: "media",
+    titulo: "No ha reportado financiacion de campana 2026",
+    descripcion:
+      "Jorge Duarte no ha reportado en Cuentas Claras. Tiene antecedente disciplinario archivado.",
+    datos_soporte: { fecha_corte: "2026-03-03" },
+    detectada_at: "2026-03-03",
+    verificada: true,
+  },
+  {
+    id: "al07",
+    persona_id: "c10",
+    contrato_id: null,
+    tipo: "concentracion_contratos",
+    severidad: "media",
+    titulo: "Primo contratista recibio 8 contratos en Cartagena",
+    descripcion:
+      "Jairo Lopez Bernal, primo del senador, recibio 8 contratos de obra civil durante su periodo como alcalde de Cartagena.",
+    datos_soporte: { contratos_count: 8, valor_total: 3_200_000_000 },
+    detectada_at: "2025-09-10",
+    verificada: false,
+  },
+  {
+    id: "al08",
+    persona_id: "c02",
+    contrato_id: null,
+    tipo: "enriquecimiento",
+    severidad: "baja",
+    titulo: "Crecimiento patrimonial del 50.6% en 5 anos",
+    descripcion:
+      "El patrimonio de Ricardo Castano paso de $8.500M a $12.800M. El crecimiento es notable pero puede explicarse por sus actividades empresariales declaradas.",
+    datos_soporte: {
+      patrimonio_2020: 8_500_000_000,
+      patrimonio_2025: 12_800_000_000,
+      crecimiento_pct: 50.6,
+    },
+    detectada_at: "2025-12-01",
+    verificada: true,
+  },
+  {
+    id: "al09",
+    persona_id: "c01",
+    contrato_id: null,
+    tipo: "concentracion_contratos",
+    severidad: "baja",
+    titulo: "Posible conflicto de interes: esposo asesora entidades publicas",
+    descripcion:
+      "Mariana Velasco declaro que su esposo es socio de una firma de abogados que asesora entidades publicas. No se ha encontrado vinculacion directa con su labor legislativa.",
+    datos_soporte: { declarado_en_ley_2013: true },
+    detectada_at: "2025-10-01",
+    verificada: true,
+  },
+  {
+    id: "al10",
+    persona_id: "c16",
+    contrato_id: null,
+    tipo: "no_reporte",
+    severidad: "media",
+    titulo: "No ha reportado financiacion de campana 2026",
+    descripcion:
+      "Oscar Bermudez no ha reportado en Cuentas Claras para su campana al Senado 2026.",
+    datos_soporte: { fecha_corte: "2026-03-03" },
+    detectada_at: "2026-03-03",
+    verificada: true,
+  },
+];

@@ -1,15 +1,26 @@
 import { createClient } from "@/lib/supabase/server";
-import { toggleAlertaVerificada, deleteAlerta } from "../actions";
+import { updateAlerta, deleteAlerta } from "../actions";
 
 export default async function AdminAlertasPage() {
   const supabase = await createClient();
   const { data: alertas } = await supabase
     .schema("eoro")
     .from("alertas")
-    .select("id, tipo, severidad, descripcion, verificada, detectada_at, persona_id, personas!inner(nombre_completo)")
+    .select("*, personas(nombre_completo)")
     .order("detectada_at", { ascending: false });
 
-  const rows = alertas ?? [];
+  const rows = (alertas ?? []) as unknown as {
+    id: string;
+    tipo: string;
+    severidad: string;
+    descripcion: string;
+    verificada: boolean;
+    detectada_at: string;
+    persona_id: string;
+    personas: { nombre_completo: string };
+  }[];
+
+  const INPUT = "rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10";
 
   const SEVERIDAD_STYLES: Record<string, string> = {
     alta: "bg-red-50 text-red-700",
@@ -24,65 +35,76 @@ export default async function AdminAlertasPage() {
         <p className="text-sm text-gray-400 mt-1">{rows.length} alertas registradas</p>
       </div>
 
-      <div className="rounded-2xl bg-white border border-gray-100 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-gray-100 text-left text-xs text-gray-400 uppercase">
-              <th className="px-5 py-3">Persona</th>
-              <th className="px-5 py-3">Tipo</th>
-              <th className="px-5 py-3">Severidad</th>
-              <th className="px-5 py-3">Descripcion</th>
-              <th className="px-5 py-3">Verificada</th>
-              <th className="px-5 py-3">Fecha</th>
-              <th className="px-5 py-3 text-right">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((a) => {
-              const personaNombre = (a.personas as unknown as { nombre_completo: string })?.nombre_completo ?? "—";
-              return (
-                <tr key={a.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="px-5 py-3 font-medium text-gray-900 max-w-[150px] truncate">
-                    {personaNombre}
-                  </td>
-                  <td className="px-5 py-3 text-gray-600 capitalize">{a.tipo}</td>
-                  <td className="px-5 py-3">
-                    <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${SEVERIDAD_STYLES[a.severidad] ?? "bg-gray-100 text-gray-500"}`}>
-                      {a.severidad}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3 text-gray-500 max-w-[250px] truncate">
-                    {a.descripcion}
-                  </td>
-                  <td className="px-5 py-3">
-                    <form action={toggleAlertaVerificada.bind(null, a.id, !a.verificada)}>
-                      <button
-                        type="submit"
-                        className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${
-                          a.verificada
-                            ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
-                        }`}
-                      >
-                        {a.verificada ? "Verificada" : "Sin verificar"}
-                      </button>
-                    </form>
-                  </td>
-                  <td className="px-5 py-3 text-gray-400 whitespace-nowrap">
-                    {a.detectada_at?.substring(0, 10)}
-                  </td>
-                  <td className="px-5 py-3 text-right">
+      {/* Cards */}
+      <div className="space-y-2">
+        {rows.map((a) => {
+          const personaNombre = a.personas?.nombre_completo ?? "—";
+          return (
+            <details key={a.id} className="group rounded-2xl bg-white border border-gray-100 overflow-hidden">
+              <summary className="flex items-center gap-4 px-5 py-3 cursor-pointer hover:bg-gray-50/50 list-none [&::-webkit-details-marker]:hidden">
+                <svg className="h-4 w-4 text-gray-400 transition-transform group-open:rotate-90 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="font-medium text-gray-900 min-w-[150px]">{personaNombre}</span>
+                <span className="text-gray-600 text-xs capitalize">{a.tipo}</span>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${SEVERIDAD_STYLES[a.severidad] ?? "bg-gray-100 text-gray-500"}`}>
+                  {a.severidad}
+                </span>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                  a.verificada ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-500"
+                }`}>
+                  {a.verificada ? "Verificada" : "Sin verificar"}
+                </span>
+                <span className="text-gray-400 text-xs ml-auto whitespace-nowrap">{a.detectada_at?.substring(0, 10)}</span>
+              </summary>
+
+              <div className="border-t border-gray-100 px-5 py-4 bg-gray-50/30">
+                <form action={updateAlerta.bind(null, a.id)} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Tipo</label>
+                    <select name="tipo" defaultValue={a.tipo} className={INPUT + " w-full"}>
+                      <option value="patrimonio_injustificado">Patrimonio injustificado</option>
+                      <option value="conflicto_interes">Conflicto de interes</option>
+                      <option value="antecedente_grave">Antecedente grave</option>
+                      <option value="financiacion_sospechosa">Financiacion sospechosa</option>
+                      <option value="vinculo_sospechoso">Vinculo sospechoso</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Severidad</label>
+                    <select name="severidad" defaultValue={a.severidad} className={INPUT + " w-full"}>
+                      <option value="alta">Alta</option>
+                      <option value="media">Media</option>
+                      <option value="baja">Baja</option>
+                    </select>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Descripcion</label>
+                    <textarea name="descripcion" defaultValue={a.descripcion ?? ""} rows={3} className={INPUT + " w-full"} />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Verificada</label>
+                    <select name="verificada" defaultValue={a.verificada ? "true" : "false"} className={INPUT + " w-full"}>
+                      <option value="true">Si</option>
+                      <option value="false">No</option>
+                    </select>
+                  </div>
+
+                  <div className="sm:col-span-2 flex items-center gap-3">
+                    <button type="submit" className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 transition-colors">
+                      Guardar cambios
+                    </button>
                     <form action={deleteAlerta.bind(null, a.id)} className="inline">
-                      <button type="submit" className="text-xs text-red-500 hover:text-red-700 font-medium">
+                      <button type="submit" className="rounded-xl px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
                         Eliminar
                       </button>
                     </form>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </div>
+                </form>
+              </div>
+            </details>
+          );
+        })}
       </div>
     </div>
   );

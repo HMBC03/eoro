@@ -35,6 +35,20 @@ export async function createDeclaracion(formData: FormData): Promise<void> {
   revalidatePath("/admin/declaraciones");
 }
 
+export async function updateDeclaracion(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("declaraciones_patrimonio").update({
+    persona_id: formData.get("persona_id") as string,
+    anio: Number(formData.get("anio")) || 0,
+    patrimonio_total: Number(formData.get("patrimonio_total")) || 0,
+    ingresos_total: Number(formData.get("ingresos_total")) || 0,
+    bienes_inmuebles_valor: Number(formData.get("bienes_inmuebles_valor")) || 0,
+    vehiculos_valor: Number(formData.get("vehiculos_valor")) || 0,
+    cuentas_bancarias_saldo: Number(formData.get("cuentas_bancarias_saldo")) || 0,
+  }).eq("id", id);
+  revalidatePath("/admin/declaraciones");
+}
+
 export async function deleteDeclaracion(id: string): Promise<void> {
   const { supabase } = await requireAdmin();
   await supabase.schema("eoro").from("declaraciones_patrimonio").delete().eq("id", id);
@@ -72,6 +86,20 @@ export async function createAntecedente(formData: FormData): Promise<void> {
   revalidatePath("/admin/antecedentes");
 }
 
+export async function updateAntecedente(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("antecedentes").update({
+    persona_id: formData.get("persona_id") as string,
+    tipo: formData.get("tipo") as string,
+    estado: formData.get("estado") as string,
+    descripcion: formData.get("descripcion") as string,
+    entidad_reporta: formData.get("entidad_reporta") as string,
+    fecha_sancion: (formData.get("fecha_sancion") as string) || null,
+    fecha_vencimiento: (formData.get("fecha_vencimiento") as string) || null,
+  }).eq("id", id);
+  revalidatePath("/admin/antecedentes");
+}
+
 export async function deleteAntecedente(id: string): Promise<void> {
   const { supabase } = await requireAdmin();
   await supabase.schema("eoro").from("antecedentes").delete().eq("id", id);
@@ -101,6 +129,17 @@ export async function createVinculo(formData: FormData): Promise<void> {
     fecha_deteccion: new Date().toISOString(),
   });
 
+  revalidatePath("/admin/vinculos");
+}
+
+export async function updateVinculo(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("vinculos_familiares").update({
+    persona_a_id: formData.get("persona_a_id") as string,
+    persona_b_id: formData.get("persona_b_id") as string,
+    parentesco: formData.get("parentesco") as string,
+    verificado: formData.get("verificado") === "true",
+  }).eq("id", id);
   revalidatePath("/admin/vinculos");
 }
 
@@ -136,6 +175,19 @@ export async function createFinanciacion(formData: FormData): Promise<void> {
     fuente: "manual",
   });
 
+  revalidatePath("/admin/financiacion");
+}
+
+export async function updateFinanciacion(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("financiacion_campana").update({
+    candidatura_id: formData.get("candidatura_id") as string,
+    tipo: formData.get("tipo") as string,
+    concepto: formData.get("concepto") as string,
+    valor: Number(formData.get("valor")) || 0,
+    aportante_nombre: formData.get("aportante_nombre") as string,
+    aportante_tipo: formData.get("aportante_tipo") as string,
+  }).eq("id", id);
   revalidatePath("/admin/financiacion");
 }
 

@@ -31,6 +31,19 @@ export async function createPartido(formData: FormData): Promise<void> {
   revalidatePath("/admin/partidos");
 }
 
+export async function updatePartido(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("partidos").update({
+    nombre: formData.get("nombre") as string,
+    sigla: formData.get("sigla") as string,
+    color_hex: formData.get("color_hex") as string,
+    ideologia: formData.get("ideologia") as string,
+    personeria_juridica: formData.get("personeria_juridica") === "true",
+    activo: formData.get("activo") === "true",
+  }).eq("id", id);
+  revalidatePath("/admin/partidos");
+}
+
 export async function deletePartido(id: string): Promise<void> {
   const { supabase } = await requireAdmin();
   await supabase.schema("eoro").from("partidos").delete().eq("id", id);
@@ -67,6 +80,21 @@ export async function createCandidatura(formData: FormData): Promise<void> {
     fuente: "manual",
   });
 
+  revalidatePath("/admin/candidaturas");
+}
+
+export async function updateCandidatura(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("candidaturas").update({
+    persona_id: formData.get("persona_id") as string,
+    partido_id: formData.get("partido_id") as string,
+    tipo: formData.get("tipo") as string,
+    eleccion_year: Number(formData.get("eleccion_year")) || 0,
+    circunscripcion: formData.get("circunscripcion") as string,
+    estado: formData.get("estado") as string,
+    elegido: formData.get("elegido") === "true",
+    votos_obtenidos: Number(formData.get("votos_obtenidos")) || 0,
+  }).eq("id", id);
   revalidatePath("/admin/candidaturas");
 }
 
@@ -108,6 +136,21 @@ export async function createCargo(formData: FormData): Promise<void> {
     fuente: "manual",
   });
 
+  revalidatePath("/admin/cargos");
+}
+
+export async function updateCargo(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("cargos_publicos").update({
+    persona_id: formData.get("persona_id") as string,
+    cargo: formData.get("cargo") as string,
+    entidad: formData.get("entidad") as string,
+    departamento: formData.get("departamento") as string,
+    municipio: formData.get("municipio") as string,
+    fecha_inicio: formData.get("fecha_inicio") as string,
+    fecha_fin: (formData.get("fecha_fin") as string) || null,
+    nivel: formData.get("nivel") as string,
+  }).eq("id", id);
   revalidatePath("/admin/cargos");
 }
 

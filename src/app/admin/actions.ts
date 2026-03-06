@@ -69,17 +69,18 @@ export async function deletePersona(id: string): Promise<void> {
 export async function updateContrato(id: string, formData: FormData): Promise<void> {
   const { supabase } = await requireAdmin();
 
-  const estado = formData.get("estado") as string;
-  const objeto = formData.get("objeto") as string;
-
-  const updates: Record<string, string> = {};
-  if (estado) updates.estado = estado;
-  if (objeto) updates.objeto = objeto;
-
   await supabase
     .schema("eoro")
     .from("contratos")
-    .update(updates)
+    .update({
+      entidad_nombre: formData.get("entidad_nombre") as string,
+      contratista_nombre: formData.get("contratista_nombre") as string,
+      objeto: formData.get("objeto") as string,
+      valor_contrato: Number(formData.get("valor_contrato")) || 0,
+      estado: formData.get("estado") as string,
+      departamento: formData.get("departamento") as string,
+      fecha_firma: formData.get("fecha_firma") as string,
+    })
     .eq("id", id);
 
   revalidatePath("/admin/contratos");
@@ -94,6 +95,17 @@ export async function deleteContrato(id: string): Promise<void> {
 // ============================================================
 // ALERTAS
 // ============================================================
+
+export async function updateAlerta(id: string, formData: FormData): Promise<void> {
+  const { supabase } = await requireAdmin();
+  await supabase.schema("eoro").from("alertas").update({
+    tipo: formData.get("tipo") as string,
+    severidad: formData.get("severidad") as string,
+    descripcion: formData.get("descripcion") as string,
+    verificada: formData.get("verificada") === "true",
+  }).eq("id", id);
+  revalidatePath("/admin/alertas");
+}
 
 export async function toggleAlertaVerificada(id: string, verificada: boolean): Promise<void> {
   const { supabase } = await requireAdmin();

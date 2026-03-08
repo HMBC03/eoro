@@ -64,6 +64,7 @@ export const NAV_ITEMS = [
   { label: "Conexiones", href: "/conexiones", icon: "network" },
   { label: "Presupuesto", href: "/presupuesto", icon: "banknote" },
   { label: "Historial", href: "/historial", icon: "clock" },
+  { label: "Contribuye", href: "/contribuye", icon: "heart" },
 ] as const;
 
 // --- Legal disclaimer ---

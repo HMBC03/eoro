@@ -83,6 +83,7 @@ export const NAV_ITEMS = [
   { label: "Presupuesto", href: "/presupuesto", icon: "banknote" },
   { label: "Historial", href: "/historial", icon: "clock" },
   { label: "Contribuye", href: "/contribuye", icon: "heart" },
+  { label: "Polis", href: "/polis", icon: "message-circle" },
 ] as const;
 
 // --- Legal disclaimer ---

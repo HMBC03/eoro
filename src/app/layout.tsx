@@ -43,6 +43,7 @@ export const metadata: Metadata = {
 
 const MODULE_HREF_MAP: Record<string, string> = {
   candidatos: "/candidatos",
+  gobierno: "/gobierno",
   mapa: "/mapa",
   contratos: "/contratos",
   conexiones: "/conexiones",

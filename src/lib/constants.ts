@@ -58,6 +58,7 @@ export const SCORE_WEIGHTS = {
 export const NAV_ITEMS = [
   { label: "Inicio", href: "/", icon: "home" },
   { label: "Candidatos 2026", href: "/candidatos", icon: "users" },
+  { label: "Gobierno", href: "/gobierno", icon: "landmark" },
   { label: "Mapa", href: "/mapa", icon: "map" },
   { label: "Contratos", href: "/contratos", icon: "file-text" },
   { label: "Conexiones", href: "/conexiones", icon: "network" },

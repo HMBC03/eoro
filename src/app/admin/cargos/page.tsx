@@ -27,6 +27,7 @@ export default async function AdminCargosPage() {
     fecha_inicio: string;
     fecha_fin: string | null;
     nivel: string;
+    rama: string | null;
     personas: { nombre_completo: string };
   }[];
 
@@ -99,6 +100,17 @@ export default async function AdminCargosPage() {
               <option value="municipal">Municipal</option>
             </select>
           </div>
+          <div>
+            <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Rama</label>
+            <select name="rama" className={INPUT + " w-full"}>
+              <option value="">Seleccionar rama...</option>
+              <option value="ejecutivo">Ejecutivo</option>
+              <option value="legislativo">Legislativo</option>
+              <option value="judicial">Judicial</option>
+              <option value="control">Organos de control</option>
+              <option value="electoral">Electoral</option>
+            </select>
+          </div>
           <div className="sm:col-span-2 pt-1">
             <button type="submit" className="rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-800 shadow-sm hover:shadow transition-all">
               Crear cargo
@@ -168,6 +180,17 @@ export default async function AdminCargosPage() {
                     <option value="nacional">Nacional</option>
                     <option value="departamental">Departamental</option>
                     <option value="municipal">Municipal</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Rama</label>
+                  <select name="rama" defaultValue={c.rama ?? ""} className={INPUT + " w-full"}>
+                    <option value="">Sin rama</option>
+                    <option value="ejecutivo">Ejecutivo</option>
+                    <option value="legislativo">Legislativo</option>
+                    <option value="judicial">Judicial</option>
+                    <option value="control">Organos de control</option>
+                    <option value="electoral">Electoral</option>
                   </select>
                 </div>
 

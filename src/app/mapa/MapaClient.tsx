@@ -79,7 +79,7 @@ export default function MapaClient({ statsArray, allCandidatos }: MapaClientProp
           </h1>
           <p className="mt-2 text-sm text-gray-400">
             Explora Colombia por departamento —{" "}
-            {totalCandidatos.toLocaleString("es-CO")} candidatos en 33 departamentos
+            {totalCandidatos.toLocaleString("es-CO")} candidatos en 32 departamentos y Bogota D.C.
           </p>
         </div>
       </div>

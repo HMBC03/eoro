@@ -120,6 +120,7 @@ export async function createCargo(formData: FormData): Promise<void> {
   const fecha_fin = (formData.get("fecha_fin") as string) || null;
   const nivel = formData.get("nivel") as string;
   const partido_id = (formData.get("partido_id") as string) || null;
+  const rama = (formData.get("rama") as string) || null;
 
   if (!persona_id || !cargo || !entidad) return;
 
@@ -133,6 +134,7 @@ export async function createCargo(formData: FormData): Promise<void> {
     fecha_fin,
     nivel,
     partido_id,
+    rama,
     fuente: "manual",
   });
 
@@ -150,6 +152,7 @@ export async function updateCargo(id: string, formData: FormData): Promise<void>
     fecha_inicio: formData.get("fecha_inicio") as string,
     fecha_fin: (formData.get("fecha_fin") as string) || null,
     nivel: formData.get("nivel") as string,
+    rama: (formData.get("rama") as string) || null,
   }).eq("id", id);
   revalidatePath("/admin/cargos");
 }

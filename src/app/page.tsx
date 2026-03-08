@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ELECCIONES_CONGRESO_2026 } from "@/lib/constants";
+import { ELECCIONES_PRESIDENCIA_2026 } from "@/lib/constants";
 import { daysUntil } from "@/lib/formatters";
 
 const STATS = [
   { value: "2,844", label: "Candidatos inscritos", icon: "users" },
-  { value: "33", label: "Departamentos", icon: "map" },
+  { value: "32", label: "Departamentos", icon: "map" },
   { value: "6M+", label: "Contratos SECOP", icon: "file" },
   { value: "10+", label: "Fuentes oficiales", icon: "database" },
 ];
@@ -80,19 +80,19 @@ const HOW_IT_WORKS = [
 ];
 
 export default function Home() {
-  const diasParaElecciones = daysUntil(ELECCIONES_CONGRESO_2026);
+  const diasParaElecciones = daysUntil(ELECCIONES_PRESIDENCIA_2026);
 
   return (
     <div className="min-h-screen">
       {/* Hero with background image — extends behind nav */}
-      <section className="relative overflow-hidden -mt-[72px]">
+      <section className="relative overflow-hidden -mt-[96px]">
         {/* Colombia background image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="https://4kwallpapers.com/images/walls/thumbs_3t/3214.jpg"
             alt="Colombia"
             fill
-            className="object-cover"
+            className="object-cover object-top"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-[#f5f5f0]" />
@@ -104,7 +104,7 @@ export default function Home() {
               {diasParaElecciones > 0 && (
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#c4e615] px-4 py-1.5 text-sm font-semibold text-gray-900 mb-6">
                   <span className="h-2 w-2 rounded-full bg-gray-900 animate-pulse" />
-                  {diasParaElecciones} dias para elecciones
+                  {diasParaElecciones} dias para elecciones presidenciales
                 </span>
               )}
               <h1 className="text-4xl font-light text-white leading-tight md:text-6xl lg:text-7xl">

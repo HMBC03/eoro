@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { CandidateCard } from "@/components/candidates/CandidateCard";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { ELECCIONES_CONGRESO_2026 } from "@/lib/constants";
+import { ELECCIONES_PRESIDENCIA_2026 } from "@/lib/constants";
 import { daysUntil } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import type { CandidatoCompleto } from "@/lib/types";
@@ -66,7 +66,7 @@ export default function CandidatosClient({ allCandidatos, partidos, departamento
   const [orden, setOrden] = useState<OrdenCampo>("nombre");
   const [page, setPage] = useState(1);
 
-  const diasParaElecciones = daysUntil(ELECCIONES_CONGRESO_2026);
+  const diasParaElecciones = daysUntil(ELECCIONES_PRESIDENCIA_2026);
 
   const handleFilterChange = <T,>(setter: (v: T) => void) => (value: T) => {
     setter(value);

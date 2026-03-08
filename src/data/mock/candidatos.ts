@@ -25,7 +25,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1975-06-12",
     departamento_origen: "Antioquia",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Abogada constitucionalista con 20 anos de experiencia. Exsenadora 2014-2022. Defensora de los derechos humanos y la reforma agraria. Ha trabajado en la Corte Constitucional.",
     redes_sociales: { twitter: "@mvelasco", instagram: "@marianavelasco" },
@@ -39,7 +39,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1968-11-03",
     departamento_origen: "Bogota D.C.",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Empresario y economista. Exministro de Hacienda 2018-2020. Defensor del libre mercado y la reduccion del estado. MBA de Harvard.",
     redes_sociales: { twitter: "@rcastano", linkedin: "ricardocastano" },
@@ -53,7 +53,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1982-03-22",
     departamento_origen: "Valle del Cauca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Ingeniera ambiental y activista. Lider del movimiento ambiental del Pacifico. Concejala de Cali 2016-2019. Impulsora de economia circular.",
     redes_sociales: {
@@ -70,7 +70,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1960-08-15",
     departamento_origen: "Santander",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Militar retirado (General). Exministro de Defensa 2011-2013. Exembajador en Estados Unidos. Halcon en politica de seguridad.",
     redes_sociales: { twitter: "@cepinzon" },
@@ -84,7 +84,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1979-12-01",
     departamento_origen: "Atlantico",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Medica y salubrista publica. Exdirectora del INS. Lider en reforma al sistema de salud. Exrepresentante a la Camara por Atlantico.",
     redes_sociales: { twitter: "@sandramoralesq" },
@@ -98,7 +98,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1985-04-18",
     departamento_origen: "Cundinamarca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Abogado penalista y politologo. Exdirector del INPEC. Senador 2018-2026. Impulsor de la reforma a la justicia.",
     redes_sociales: { twitter: "@felipegutierrez", instagram: "@fgutierrezv" },
@@ -112,7 +112,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1990-07-25",
     departamento_origen: "Risaralda",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Economista y emprendedora tech. Fundadora de una startup de govtech. Primera vez en politica electoral. Defensora de gobierno abierto.",
     redes_sociales: {
@@ -130,7 +130,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1955-01-30",
     departamento_origen: "Norte de Santander",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Ganadero y exgobernador de Norte de Santander 2008-2011. Cacique politico regional. Investigado por nexos con paramilitarismo (caso archivado).",
     redes_sociales: {},
@@ -144,7 +144,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1988-09-14",
     departamento_origen: "Caldas",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Periodista investigativa. Premio Nacional de Periodismo 2020. Primera candidatura a Senado. Enfoque en transparencia y anticorrupcion.",
     redes_sociales: {
@@ -161,7 +161,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1972-05-08",
     departamento_origen: "Bolivar",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Ingeniero civil y exalcalde de Cartagena 2016-2019. Gestion polemica por contratos de obra publica. Senador desde 2022.",
     redes_sociales: { twitter: "@amlopezb" },
@@ -175,7 +175,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1983-02-28",
     departamento_origen: "Antioquia",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Internacionalista y exdirectora de cooperacion internacional. Representante a la Camara 2022-2026. Defensora de equidad de genero.",
     redes_sociales: {
@@ -192,7 +192,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1965-10-20",
     departamento_origen: "Tolima",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Sindicalista y lider campesino. Exrepresentante a la Camara por Tolima. Defensor de la reforma agraria y los derechos de los trabajadores.",
     redes_sociales: { twitter: "@miguelsuarezt" },
@@ -206,7 +206,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1991-11-05",
     departamento_origen: "Quindio",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Abogada y activista digital. Cofundadora de ONG de transparencia. Candidata a Camara por primera vez. Experta en gobierno abierto y datos.",
     redes_sociales: {
@@ -224,7 +224,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1958-06-22",
     departamento_origen: "Cordoba",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Ganadero y exsenador por tres periodos. Dinastia politica familiar. Su hermano fue gobernador y su hijo es alcalde. Investigado por enriquecimiento ilicito (en curso).",
     redes_sociales: {},
@@ -238,7 +238,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1987-08-10",
     departamento_origen: "Boyaca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Educadora y exsecretaria de educacion de Boyaca. Representante a la Camara 2022-2026. Impulsora de la reforma educativa rural.",
     redes_sociales: {
@@ -255,7 +255,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1970-03-15",
     departamento_origen: "Meta",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Empresario petrolero y exalcalde de Villavicencio. Senador 2014-2022. Defensor de la industria extractiva con responsabilidad ambiental.",
     redes_sociales: { twitter: "@oscarbermudez" },
@@ -269,7 +269,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1993-01-19",
     departamento_origen: "Huila",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Politologa y analista de datos. Asesora del Ministerio de las TIC. Primera candidatura. Propone digitalizacion del estado y gobierno de datos.",
     redes_sociales: {
@@ -286,7 +286,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1963-12-04",
     departamento_origen: "Cauca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Lider indigena y exgobernador del Cauca. Defensor de los derechos de pueblos originarios. Senador 2018-2026. Impulsor de la autonomia territorial.",
     redes_sociales: { twitter: "@rodrigocifuentes" },
@@ -388,11 +388,11 @@ const vinculos: VinculoFamiliar[] = [
 
 // Extra personas for family members
 const familiares: Persona[] = [
-  { id: "fam01", cedula: "9001001001", nombre_completo: "Eduardo Ramirez Correa", fecha_nacimiento: "1961-04-10", departamento_origen: "Cordoba", foto_url: null, tipo: "funcionario", biografia: "Gobernador de Cordoba 2020-2023. Hermano del senador Humberto Ramirez.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
-  { id: "fam02", cedula: "9002002002", nombre_completo: "Sebastian Ramirez Ochoa", fecha_nacimiento: "1990-07-20", departamento_origen: "Cordoba", foto_url: null, tipo: "funcionario", biografia: "Alcalde de Monteria 2024-2027. Hijo del senador Humberto Ramirez.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
-  { id: "fam03", cedula: "9003003003", nombre_completo: "Luis Fernando Ochoa Ramirez", fecha_nacimiento: "1965-02-28", departamento_origen: "Cordoba", foto_url: null, tipo: "contratista", biografia: "Empresario de construccion. Contratista de la Gobernacion de Cordoba. Cunado del senador.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
-  { id: "fam04", cedula: "9004004004", nombre_completo: "Andres Felipe Torres Mejia", fecha_nacimiento: "1973-09-05", departamento_origen: "Antioquia", foto_url: null, tipo: "civil", biografia: "Abogado. Socio de firma que asesora entidades publicas. Esposo de Mariana Velasco.", redes_sociales: {}, created_at: "2025-03-01", updated_at: "2025-03-01" },
-  { id: "fam05", cedula: "9005005005", nombre_completo: "Jairo Lopez Bernal", fecha_nacimiento: "1975-11-12", departamento_origen: "Bolivar", foto_url: null, tipo: "contratista", biografia: "Contratista de obras civiles en Cartagena. Primo del senador Lopez.", redes_sociales: {}, created_at: "2024-11-20", updated_at: "2024-11-20" },
+  { id: "fam01", cedula: "9001001001", nombre_completo: "Eduardo Ramirez Correa", fecha_nacimiento: "1961-04-10", departamento_origen: "Cordoba", foto_url: null, biografia: "Gobernador de Cordoba 2020-2023. Hermano del senador Humberto Ramirez.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
+  { id: "fam02", cedula: "9002002002", nombre_completo: "Sebastian Ramirez Ochoa", fecha_nacimiento: "1990-07-20", departamento_origen: "Cordoba", foto_url: null, biografia: "Alcalde de Monteria 2024-2027. Hijo del senador Humberto Ramirez.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
+  { id: "fam03", cedula: "9003003003", nombre_completo: "Luis Fernando Ochoa Ramirez", fecha_nacimiento: "1965-02-28", departamento_origen: "Cordoba", foto_url: null, biografia: "Empresario de construccion. Contratista de la Gobernacion de Cordoba. Cunado del senador.", redes_sociales: {}, created_at: "2025-01-15", updated_at: "2025-01-15" },
+  { id: "fam04", cedula: "9004004004", nombre_completo: "Andres Felipe Torres Mejia", fecha_nacimiento: "1973-09-05", departamento_origen: "Antioquia", foto_url: null, biografia: "Abogado. Socio de firma que asesora entidades publicas. Esposo de Mariana Velasco.", redes_sociales: {}, created_at: "2025-03-01", updated_at: "2025-03-01" },
+  { id: "fam05", cedula: "9005005005", nombre_completo: "Jairo Lopez Bernal", fecha_nacimiento: "1975-11-12", departamento_origen: "Bolivar", foto_url: null, biografia: "Contratista de obras civiles en Cartagena. Primo del senador Lopez.", redes_sociales: {}, created_at: "2024-11-20", updated_at: "2024-11-20" },
 ];
 
 // --- Campaign finance ---

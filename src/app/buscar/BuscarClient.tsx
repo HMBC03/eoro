@@ -96,7 +96,7 @@ export default function BuscarClient({ initialQuery, results }: Props) {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">{p.nombre_completo}</p>
-                        <p className="text-[11px] text-gray-400">{p.tipo} — {p.departamento_origen}</p>
+                        <p className="text-[11px] text-gray-400">{p.departamento_origen}</p>
                       </div>
                     </div>
                     <svg className="h-4 w-4 text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

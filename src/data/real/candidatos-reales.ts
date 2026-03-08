@@ -130,7 +130,6 @@ function processRawRecords(
       fecha_nacimiento: "",
       departamento_origen: normalizeDepartamento(r.departamento),
       foto_url: null,
-      tipo: "candidato",
       biografia: "",
       redes_sociales: {},
       created_at: "2026-01-01",

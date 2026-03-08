@@ -12,7 +12,6 @@ export interface Persona {
   fecha_nacimiento: string;
   departamento_origen: string;
   foto_url: string | null;
-  tipo: "candidato" | "funcionario" | "contratista" | "civil";
   biografia: string;
   redes_sociales: RedesSociales;
   created_at: string;

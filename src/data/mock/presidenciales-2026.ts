@@ -44,7 +44,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1962-04-07",
     departamento_origen: "Bogota D.C.",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Senador desde 2014, activista de derechos humanos. Hijo de Manuel Cepeda Vargas, senador de la Union Patriotica asesinado en 1994. Lider del Pacto Historico y principal figura de la izquierda colombiana.",
     redes_sociales: { twitter: "@IvanCepedaCast" },
@@ -58,7 +58,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1975-09-15",
     departamento_origen: "Bolivar",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Abogado penalista, conocido por casos mediaticos. Independiente de derecha, ha defendido figuras controversiales. Primera candidatura presidencial.",
     redes_sociales: { twitter: "@ABOREPODERPOPUL" },
@@ -72,7 +72,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1956-06-19",
     departamento_origen: "Antioquia",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Matematico y politico. Exalcalde de Medellin (2004-2007), exgobernador de Antioquia (2012-2015). Tercer intento presidencial. Lider de centro independiente.",
     redes_sociales: { twitter: "@sergio_fajardo" },
@@ -86,7 +86,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1977-10-01",
     departamento_origen: "Cauca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Senadora por Centro Democratico desde 2014. Nieta del presidente Guillermo Leon Valencia (1962-1966) e hija del senador Guillermo Leon Valencia Munoz. Representante de la derecha uribista.",
     redes_sociales: { twitter: "@PalomaValworker" },
@@ -100,7 +100,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1972-01-28",
     departamento_origen: "Santander",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Periodista y directora de medios. Conocida por investigaciones periodisticas. Fundadora del Movimiento Valientes. Primera candidatura politica.",
     redes_sociales: { twitter: "@VickyDavilaH" },
@@ -114,7 +114,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1970-09-23",
     departamento_origen: "Bogota D.C.",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Politologa, exsenadora y exalcaldesa de Bogota (2020-2023). Primera mujer alcaldesa de Bogota. Anticorrupcion, centro-izquierda verde.",
     redes_sociales: { twitter: "@ClaudiaLopez" },
@@ -128,7 +128,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1958-06-16",
     departamento_origen: "Valle del Cauca",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Medico cirujano, exsenador (multiples periodos), presidente del Senado 2022-2023. Impulsor del acuerdo de paz. Ha pasado por multiples partidos politicos.",
     redes_sociales: { twitter: "@RoyBarreras" },
@@ -142,7 +142,7 @@ const personas: Persona[] = [
     fecha_nacimiento: "1980-01-20",
     departamento_origen: "Antioquia",
     foto_url: null,
-    tipo: "candidato",
+
     biografia:
       "Ingeniero y exalcalde de Medellin (2020-2023). Gestion polemica con suspension temporal. Se identifica como independiente de izquierda.",
     redes_sociales: { twitter: "@QuinteroCalle" },
@@ -160,7 +160,7 @@ const familiaresPres: Persona[] = [
     fecha_nacimiento: "1930-01-01",
     departamento_origen: "Bogota D.C.",
     foto_url: null,
-    tipo: "funcionario",
+
     biografia:
       "Senador por la Union Patriotica. Asesinado en 1994 por paramilitares. Su muerte fue reconocida como crimen de Estado por la Corte Interamericana de DDHH.",
     redes_sociales: {},
@@ -174,7 +174,7 @@ const familiaresPres: Persona[] = [
     fecha_nacimiento: "1909-04-27",
     departamento_origen: "Cauca",
     foto_url: null,
-    tipo: "funcionario",
+
     biografia:
       "Presidente de Colombia (1962-1966). Segundo presidente del Frente Nacional. Abuelo de Paloma Valencia.",
     redes_sociales: {},
@@ -188,7 +188,7 @@ const familiaresPres: Persona[] = [
     fecha_nacimiento: "1945-03-15",
     departamento_origen: "Cauca",
     foto_url: null,
-    tipo: "funcionario",
+
     biografia:
       "Senador de la Republica. Hijo del presidente Valencia. Padre de Paloma Valencia. Politico conservador del Cauca.",
     redes_sociales: {},

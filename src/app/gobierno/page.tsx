@@ -12,7 +12,6 @@ export interface FuncionarioGobierno {
   persona: {
     id: string;
     nombre_completo: string;
-    tipo: string;
     departamento_origen: string;
     foto_url: string | null;
   };
@@ -35,7 +34,7 @@ export default async function GobiernoPage() {
     .from("cargos_publicos")
     .select(`
       id, cargo, entidad, rama, fecha_inicio,
-      personas!inner(id, nombre_completo, tipo, departamento_origen, foto_url),
+      personas!inner(id, nombre_completo, departamento_origen, foto_url),
       partidos(id, nombre, color_hex)
     `)
     .is("fecha_fin", null)
@@ -49,7 +48,7 @@ export default async function GobiernoPage() {
     entidad: string;
     rama: string;
     fecha_inicio: string | null;
-    personas: { id: string; nombre_completo: string; tipo: string; departamento_origen: string; foto_url: string | null };
+    personas: { id: string; nombre_completo: string; departamento_origen: string; foto_url: string | null };
     partidos: { id: string; nombre: string; color_hex: string } | null;
   }[]).map((c) => ({
     id: c.id,

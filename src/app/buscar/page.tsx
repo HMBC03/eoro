@@ -8,7 +8,6 @@ interface SearchPageProps {
 interface PersonaResult {
   id: string;
   nombre_completo: string;
-  tipo: string;
   departamento_origen: string;
 }
 
@@ -58,7 +57,7 @@ export default async function BuscarPage({ searchParams }: SearchPageProps) {
       supabase
         .schema("eoro")
         .from("personas")
-        .select("id, nombre_completo, tipo, departamento_origen")
+        .select("id, nombre_completo, departamento_origen")
         .ilike("nombre_completo", pattern)
         .limit(20),
       supabase

@@ -45,16 +45,6 @@ export default async function AdminPersonasPage() {
             <input name="cedula" placeholder="Ej: 1234567890" required className={INPUT + " w-full"} />
           </div>
           <div>
-            <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Tipo</label>
-            <select name="tipo" required className={INPUT + " w-full"}>
-              <option value="">Seleccionar...</option>
-              <option value="candidato">Candidato</option>
-              <option value="funcionario">Funcionario</option>
-              <option value="contratista">Contratista</option>
-              <option value="civil">Civil</option>
-            </select>
-          </div>
-          <div>
             <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Departamento</label>
             <input name="departamento_origen" placeholder="Ej: Antioquia" className={INPUT + " w-full"} />
           </div>
@@ -80,14 +70,6 @@ export default async function AdminPersonasPage() {
               </svg>
               <span className="font-medium text-gray-900 min-w-[200px]">{p.nombre_completo}</span>
               <span className="text-gray-500 text-xs">{p.cedula}</span>
-              <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                p.tipo === "candidato" ? "bg-blue-50 text-blue-700" :
-                p.tipo === "funcionario" ? "bg-emerald-50 text-emerald-700" :
-                p.tipo === "contratista" ? "bg-amber-50 text-amber-700" :
-                "bg-gray-100 text-gray-500"
-              }`}>
-                {p.tipo}
-              </span>
               <span className="text-gray-400 text-xs ml-auto">{p.departamento_origen}</span>
             </summary>
 
@@ -100,15 +82,6 @@ export default async function AdminPersonasPage() {
                 <div>
                   <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Cedula</label>
                   <input name="cedula" defaultValue={p.cedula} required className={INPUT + " w-full"} />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Tipo</label>
-                  <select name="tipo" defaultValue={p.tipo} required className={INPUT + " w-full"}>
-                    <option value="candidato">Candidato</option>
-                    <option value="funcionario">Funcionario</option>
-                    <option value="contratista">Contratista</option>
-                    <option value="civil">Civil</option>
-                  </select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-semibold text-gray-400 uppercase mb-1">Departamento</label>

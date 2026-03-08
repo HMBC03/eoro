@@ -12,16 +12,14 @@ export async function createPersona(formData: FormData): Promise<void> {
 
   const nombre = formData.get("nombre_completo") as string;
   const cedula = formData.get("cedula") as string;
-  const tipo = formData.get("tipo") as string;
   const departamento = formData.get("departamento_origen") as string;
   const biografia = (formData.get("biografia") as string) || "";
 
-  if (!nombre || !cedula || !tipo) return;
+  if (!nombre || !cedula) return;
 
   await supabase.schema("eoro").from("personas").insert({
     nombre_completo: nombre,
     cedula,
-    tipo,
     departamento_origen: departamento || "Colombia",
     biografia,
     fecha_nacimiento: "1990-01-01",
@@ -37,7 +35,6 @@ export async function updatePersona(id: string, formData: FormData): Promise<voi
 
   const nombre = formData.get("nombre_completo") as string;
   const cedula = formData.get("cedula") as string;
-  const tipo = formData.get("tipo") as string;
   const departamento = formData.get("departamento_origen") as string;
   const biografia = (formData.get("biografia") as string) || "";
 
@@ -47,7 +44,6 @@ export async function updatePersona(id: string, formData: FormData): Promise<voi
     .update({
       nombre_completo: nombre,
       cedula,
-      tipo,
       departamento_origen: departamento,
       biografia,
     })

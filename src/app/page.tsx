@@ -89,8 +89,8 @@ export default function Home() {
         {/* Colombia background image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1568632234157-ce7aecd03d0d?w=1920&q=80&auto=format&fit=crop"
-            alt="Colombia paisaje"
+            src="https://4kwallpapers.com/images/walls/thumbs_3t/3214.jpg"
+            alt="Colombia"
             fill
             className="object-cover"
             priority

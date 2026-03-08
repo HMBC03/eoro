@@ -35,11 +35,19 @@ const NAV_SECTIONS = [
     ],
   },
   {
+    label: "Eoro Score",
+    items: [
+      { label: "Evaluaciones", href: "/admin/eoro-evaluaciones" },
+      { label: "Reportes", href: "/admin/eoro-reportes" },
+      { label: "Variables", href: "/admin/eoro-variables" },
+    ],
+  },
+  {
     label: "Presupuesto",
     items: [
       { label: "Ramas gobierno", href: "/admin/ramas" },
       { label: "Entidades", href: "/admin/entidades" },
-      { label: "Scores", href: "/admin/scores" },
+      { label: "Scores (legacy)", href: "/admin/scores" },
     ],
   },
   {

@@ -107,3 +107,34 @@ export function getInitials(name: string): string {
   if (parts.length === 1) return parts[0][0].toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
+
+// --- Eoro Score utilities ---
+
+import { EORO_SCORE_TIERS } from "./constants";
+
+export function getEoroScoreColor(score: number): string {
+  const tier = EORO_SCORE_TIERS.find((t) => score >= t.min && score <= t.max);
+  return tier?.color ?? "#7b1fa2";
+}
+
+export function getEoroScoreBg(score: number): string {
+  const tier = EORO_SCORE_TIERS.find((t) => score >= t.min && score <= t.max);
+  return tier?.bg ?? "#f3e5f5";
+}
+
+export function getEoroScoreLabel(score: number): string {
+  const tier = EORO_SCORE_TIERS.find((t) => score >= t.min && score <= t.max);
+  return tier?.label ?? "Destruido";
+}
+
+export function formatDateCO(dateStr: string): string {
+  try {
+    return new Date(dateStr).toLocaleDateString("es-CO", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return dateStr.slice(0, 10);
+  }
+}

@@ -397,6 +397,7 @@ function buildPresidencial(personaId: string): CandidatoCompleto | null {
     financiacion: financiacion.filter((f) => f.candidatura_id === candidaturaActual.id),
     alertas: alertas.filter((a) => a.persona_id === personaId),
     score: { persona_id: personaId, total: 0, desglose: { financiacion_reportada: 0, sin_antecedentes_disciplinarios: 0, sin_responsabilidad_fiscal: 0, declaro_bienes: 0, crecimiento_patrimonial_razonable: 0, sin_familiares_vinculados: 0, sin_cambios_partido: 0, reporto_conflictos: 0 } },
+    eoro_score: null,
   };
 
   base.score = calculateScore(base);

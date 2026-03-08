@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getCandidatoById } from "@/lib/data/candidatos";
 import { getDynastyDataForCandidato } from "@/lib/data/dynasty";
+import { getHistorialForPersona, getEvaluacionesForPersona } from "@/lib/data/eoro-score";
 import { createClient } from "@/lib/supabase/server";
 import CandidatoDetailClient from "./CandidatoDetailClient";
 
@@ -13,7 +14,11 @@ export default async function CandidatoPerfilPage({
   const candidato = await getCandidatoById(id);
   if (!candidato) notFound();
 
-  const dynastyData = await getDynastyDataForCandidato(id);
+  const [dynastyData, eoroHistorial, eoroEvaluaciones] = await Promise.all([
+    getDynastyDataForCandidato(id),
+    getHistorialForPersona(id),
+    getEvaluacionesForPersona(id),
+  ]);
 
   // Fetch familiar personas for vinculos section
   const familiarIds = candidato.vinculos.map((v) =>
@@ -26,10 +31,10 @@ export default async function CandidatoPerfilPage({
     const { data: familiares } = await supabase
       .schema("eoro")
       .from("personas")
-      .select("id, nombre_completo, tipo, biografia")
+      .select("id, nombre_completo, biografia")
       .in("id", familiarIds);
     for (const f of familiares ?? []) {
-      familiarMap[f.id] = f;
+      familiarMap[f.id] = { ...f, tipo: "" };
     }
   }
 
@@ -38,6 +43,8 @@ export default async function CandidatoPerfilPage({
       candidato={candidato}
       dynastyData={dynastyData}
       familiarMap={familiarMap}
+      eoroHistorial={eoroHistorial}
+      eoroEvaluaciones={eoroEvaluaciones}
     />
   );
 }

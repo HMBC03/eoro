@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { DynastyGraphCard } from "@/components/graphs/DynastyGraphCard";
 import { Badge } from "@/components/ui/Badge";
-import { cn, getInitials } from "@/lib/utils";
+import { cn, getInitials, getEoroScoreColor, getEoroScoreBg, getEoroScoreLabel } from "@/lib/utils";
 import {
   formatCOP,
   formatCOPShort,
@@ -13,8 +13,10 @@ import {
   calculateAge,
   percentChange,
 } from "@/lib/formatters";
-import type { CandidatoCompleto } from "@/lib/types";
+import type { CandidatoCompleto, EoroHistorial, EoroEvaluacion } from "@/lib/types";
 import type { DynastyData } from "@/lib/data/dynasty";
+import { EoroScoreCard } from "@/components/candidates/EoroScoreCard";
+import { EoroTimeline } from "@/components/candidates/EoroTimeline";
 
 // ---- Familiar type for vinculos section ----
 type FamiliarPersona = {
@@ -29,6 +31,8 @@ interface CandidatoDetailClientProps {
   candidato: CandidatoCompleto;
   dynastyData: DynastyData | null;
   familiarMap: Record<string, FamiliarPersona>;
+  eoroHistorial?: EoroHistorial[];
+  eoroEvaluaciones?: EoroEvaluacion[];
 }
 
 // ---- Section nav for scrollable detail area ----
@@ -47,6 +51,8 @@ export default function CandidatoDetailClient({
   candidato,
   dynastyData,
   familiarMap,
+  eoroHistorial = [],
+  eoroEvaluaciones = [],
 }: CandidatoDetailClientProps) {
   const [activeSection, setActiveSection] = useState<SectionId>("resumen");
   const [showDynasty, setShowDynasty] = useState(false);
@@ -136,11 +142,20 @@ export default function CandidatoDetailClient({
 
           {/* Stat pills */}
           <div className="flex items-center gap-3">
-            <StatPill
-              value={score.total > 0 ? String(score.total) : "—"}
-              label="Score"
-              color={score.total >= 70 ? "green" : score.total >= 40 ? "amber" : score.total > 0 ? "red" : "gray"}
-            />
+            {(() => {
+              const eoroTotal = candidato.eoro_score?.score_total;
+              const displayScore = eoroTotal != null ? eoroTotal : (score.total > 0 ? score.total : null);
+              const tierColor = displayScore != null
+                ? (displayScore >= 70 ? "green" : displayScore >= 40 ? "amber" : "red")
+                : "gray";
+              return (
+                <StatPill
+                  value={displayScore != null ? String(displayScore) : "—"}
+                  label={displayScore != null ? getEoroScoreLabel(displayScore) : "Score"}
+                  color={tierColor as "green" | "amber" | "red" | "gray"}
+                />
+              );
+            })()}
             <StatPill
               value={String(historial_candidaturas.length)}
               label="Candidaturas"
@@ -229,63 +244,29 @@ export default function CandidatoDetailClient({
             </div>
 
             {/* Score breakdown card */}
-            <div className="rounded-3xl bg-white p-5 shadow-sm border border-gray-100">
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">
-                Score de transparencia
-              </p>
-              {score.total > 0 ? (
-                <div className="space-y-2.5">
-                  {Object.entries(score.desglose).map(([key, value]) => {
-                    const maxMap: Record<string, number> = {
-                      financiacion_reportada: 20,
-                      sin_antecedentes_disciplinarios: 15,
-                      sin_responsabilidad_fiscal: 15,
-                      declaro_bienes: 15,
-                      crecimiento_patrimonial_razonable: 10,
-                      sin_familiares_vinculados: 10,
-                      sin_cambios_partido: 10,
-                      reporto_conflictos: 5,
-                    };
-                    const labelMap: Record<string, string> = {
-                      financiacion_reportada: "Financiacion",
-                      sin_antecedentes_disciplinarios: "Sin antecedentes",
-                      sin_responsabilidad_fiscal: "Sin resp. fiscal",
-                      declaro_bienes: "Declaro bienes",
-                      crecimiento_patrimonial_razonable: "Patrimonio",
-                      sin_familiares_vinculados: "Sin nepotismo",
-                      sin_cambios_partido: "Estabilidad partido",
-                      reporto_conflictos: "Conflictos",
-                    };
-                    const max = maxMap[key] ?? 10;
-                    const pct = (value / max) * 100;
-                    return (
-                      <div key={key}>
-                        <div className="flex items-center justify-between text-[11px] mb-1">
-                          <span className="text-gray-500">{labelMap[key] ?? key}</span>
-                          <span className={cn("font-semibold", value > 0 ? "text-emerald-600" : "text-red-400")}>
-                            {value}/{max}
-                          </span>
-                        </div>
-                        <div className="h-1.5 rounded-full bg-gray-100">
-                          <div
-                            className={cn(
-                              "h-1.5 rounded-full transition-all",
-                              value > 0 ? "bg-emerald-400" : "bg-red-200"
-                            )}
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
+            {candidato.eoro_score ? (
+              <EoroScoreCard score={candidato.eoro_score} />
+            ) : (
+              <div className="rounded-3xl bg-white p-5 shadow-sm border border-gray-100">
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">
+                  Eoro Score
+                </p>
                 <div className="rounded-2xl bg-gray-50 p-4 text-center">
                   <p className="text-3xl font-light text-gray-300">—</p>
-                  <p className="mt-1 text-xs text-gray-400">Sin datos suficientes para calcular</p>
+                  <p className="mt-1 text-xs text-gray-400">Sin evaluaciones registradas</p>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {/* Eoro Timeline */}
+            {eoroHistorial.length > 0 && (
+              <div className="rounded-3xl bg-white p-5 shadow-sm border border-gray-100">
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">
+                  Historial Eoro
+                </p>
+                <EoroTimeline historial={eoroHistorial} />
+              </div>
+            )}
 
             {/* Section nav */}
             <div className="rounded-3xl bg-white p-4 shadow-sm border border-gray-100">

@@ -35,14 +35,15 @@ export const DIVIPOLA_URL = `${SECOP_BASE_URL}/gdxc-w37w.json`;
 // --- App configuration ---
 export const APP_NAME = "Eoro";
 export const APP_DESCRIPTION =
-  "Plataforma de fiscalizacion ciudadana. Datos abiertos de candidatos y funcionarios publicos de Colombia.";
+  "Plataforma de fiscalización ciudadana. Datos abiertos de candidatos y funcionarios públicos de Colombia.";
 export const APP_URL = "https://eoro.co";
 
 // --- Pagination defaults ---
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
 
-// --- Score de Transparencia weights ---
+// --- Score de Transparencia weights (legacy) ---
+/** @deprecated Use EORO_SCORE_TIERS instead */
 export const SCORE_WEIGHTS = {
   financiacion_reportada: 20,
   sin_antecedentes_disciplinarios: 15,
@@ -53,6 +54,23 @@ export const SCORE_WEIGHTS = {
   sin_cambios_partido: 10,
   reporto_conflictos: 5,
 } as const;
+
+// --- Eoro Score tiers (5 niveles) ---
+export const EORO_SCORE_TIERS = [
+  { min: 90, max: 100, label: "Intacto", slug: "intacto" as const, color: "#27ae60", bg: "#e8f5e9", description: "Sin hallazgos verificados o mínimos" },
+  { min: 70, max: 89, label: "Leve", slug: "leve" as const, color: "#8bc34a", bg: "#f1f8e9", description: "Hallazgos menores documentados" },
+  { min: 45, max: 69, label: "Dañado", slug: "danado" as const, color: "#d35400", bg: "#fef3e2", description: "Hallazgos significativos" },
+  { min: 20, max: 44, label: "Roto", slug: "roto" as const, color: "#c0392b", bg: "#fce4e4", description: "Múltiples hallazgos graves" },
+  { min: 0, max: 19, label: "Destruido", slug: "destruido" as const, color: "#7b1fa2", bg: "#f3e5f5", description: "Riesgo extremo de corrupción" },
+] as const;
+
+// --- Eoro restoration rules ---
+export const EORO_RESTORATION_RULES: Record<string, number> = {
+  absuelto: 0.80,
+  prescrito: 0.50,
+  archivado: 0.60,
+  anulado: 1.00,
+};
 
 // --- Navigation items ---
 export const NAV_ITEMS = [
@@ -69,7 +87,7 @@ export const NAV_ITEMS = [
 
 // --- Legal disclaimer ---
 export const DISCLAIMER =
-  "La informacion publicada proviene exclusivamente de fuentes publicas oficiales amparadas por la Ley 1712 de 2014 (Transparencia) y la Ley 2013 de 2019. Esta plataforma no realiza afirmaciones sobre culpabilidad. Presenta datos verificables para el ejercicio del control social ciudadano consagrado en el Articulo 270 de la Constitucion Politica de Colombia.";
+  "La información publicada proviene exclusivamente de fuentes públicas oficiales amparadas por la Ley 1712 de 2014 (Transparencia) y la Ley 2013 de 2019. Esta plataforma no realiza afirmaciones sobre culpabilidad. Presenta datos verificables para el ejercicio del control social ciudadano consagrado en el Artículo 270 de la Constitución Política de Colombia.";
 
 // --- Colombian departments (DANE codes) ---
 export const DEPARTAMENTOS = [

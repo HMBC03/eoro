@@ -215,8 +215,9 @@ export interface GrafoData {
   edges: GrafoEdge[];
 }
 
-// --- Transparency Score ---
+// --- Transparency Score (legacy — usar EoroScoreCache) ---
 
+/** @deprecated Use EoroScoreCache instead */
 export interface ScoreTransparencia {
   persona_id: string;
   total: number; // 0-100
@@ -232,6 +233,105 @@ export interface ScoreTransparencia {
   };
 }
 
+// --- Eoro Score System ---
+
+export interface EoroCategoria {
+  id: string;
+  nombre: string;
+  slug: string;
+  peso_max: number;
+  descripcion: string;
+  orden: number;
+}
+
+export interface EoroVariable {
+  id: string;
+  categoria_id: string;
+  nombre: string;
+  slug: string;
+  penalizacion: number;
+  condicion: string;
+  fuente_tipo: "oficial" | "judicial" | "periodistica" | "ciudadana" | "electoral";
+  activa: boolean;
+  orden: number;
+}
+
+export interface EoroEvaluacion {
+  id: string;
+  persona_id: string;
+  variable_id: string;
+  puntos_restados: number;
+  evidencia_url: string;
+  fuente_descripcion: string;
+  fuente_verificada: boolean;
+  fecha_deteccion: string;
+  fecha_resolucion: string | null;
+  resolucion_tipo:
+    | "absuelto"
+    | "prescrito"
+    | "archivado"
+    | "anulado"
+    | "vigente"
+    | null;
+  notas: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EoroReporteCiudadano {
+  id: string;
+  persona_id: string;
+  reportante_hash: string;
+  descripcion: string;
+  evidencia_urls: string[];
+  estado:
+    | "pendiente"
+    | "en_revision"
+    | "verificado"
+    | "rechazado"
+    | "duplicado";
+  verificado_por: string | null;
+  verificado_at: string | null;
+  fuentes_verificacion: string[];
+  impacto_score: number;
+  notas_internas: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EoroHistorial {
+  id: string;
+  persona_id: string;
+  score_anterior: number;
+  score_nuevo: number;
+  variable_id: string | null;
+  evento:
+    | "evaluacion_creada"
+    | "evaluacion_resuelta"
+    | "reporte_verificado"
+    | "reporte_rechazado"
+    | "restauracion"
+    | "recalculo";
+  detalle: string;
+  created_at: string;
+}
+
+export interface EoroScoreCache {
+  persona_id: string;
+  score_total: number;
+  desglose_categorias: Record<string, { max: number; restado: number }>;
+  num_evaluaciones: number;
+  num_reportes_verificados: number;
+  calculated_at: string;
+}
+
+export type EoroScoreTier =
+  | "intacto"
+  | "leve"
+  | "danado"
+  | "roto"
+  | "destruido";
+
 // --- Candidate Profile (aggregated view) ---
 
 export interface CandidatoCompleto {
@@ -245,7 +345,9 @@ export interface CandidatoCompleto {
   vinculos: VinculoFamiliar[];
   financiacion: FinanciacionCampana[];
   alertas: Alerta[];
+  /** @deprecated Use eoro_score instead */
   score: ScoreTransparencia;
+  eoro_score: EoroScoreCache | null;
 }
 
 // --- Budget / Presupuesto ---

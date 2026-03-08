@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CandidatoCompleto } from "@/lib/types";
-import { getInitials, cn } from "@/lib/utils";
+import { getInitials, getEoroScoreColor, getEoroScoreBg, getEoroScoreLabel } from "@/lib/utils";
 import { formatCOPShort, calculateAge } from "@/lib/formatters";
 
 interface CandidateCardProps {
@@ -72,25 +72,32 @@ export function CandidateCard({ candidato }: CandidateCardProps) {
         </div>
 
         {/* Score */}
-        <div className="shrink-0 text-center">
-          <div
-            className={cn(
-              "flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold",
-              score.total > 0
-                ? score.total >= 70
-                  ? "bg-[#e8f5e9] text-[#27ae60]"
-                  : score.total >= 40
-                    ? "bg-[#fef3e2] text-[#d35400]"
-                    : "bg-[#fce4e4] text-[#c0392b]"
-                : "bg-gray-100 text-gray-400"
-            )}
-          >
-            {score.total > 0 ? score.total : "—"}
-          </div>
-          <p className="mt-1 text-[9px] text-gray-400">
-            {score.total > 0 ? "Score" : "Sin datos"}
-          </p>
-        </div>
+        {(() => {
+          const eoroTotal = candidato.eoro_score?.score_total;
+          const displayScore = eoroTotal != null ? eoroTotal : (score.total > 0 ? score.total : null);
+          return (
+            <div className="shrink-0 text-center">
+              {displayScore != null ? (
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold"
+                  style={{
+                    backgroundColor: getEoroScoreBg(displayScore),
+                    color: getEoroScoreColor(displayScore),
+                  }}
+                >
+                  {displayScore}
+                </div>
+              ) : (
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold bg-gray-100 text-gray-400">
+                  —
+                </div>
+              )}
+              <p className="mt-1 text-[9px] text-gray-400">
+                {displayScore != null ? getEoroScoreLabel(displayScore) : "Sin datos"}
+              </p>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Alert indicators */}

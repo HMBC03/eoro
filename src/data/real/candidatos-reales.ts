@@ -161,6 +161,7 @@ function processRawRecords(
       financiacion: [],
       alertas: [],
       score: buildPendingScore(id),
+      eoro_score: null,
       // Extra metadata for filtering
       _meta: {
         agrupacion_original: r.agrupacion,

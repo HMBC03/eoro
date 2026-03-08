@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
-import type { CandidatoCompleto, ScoreTransparencia } from "@/lib/types";
+import type { CandidatoCompleto, ScoreTransparencia, EoroScoreCache } from "@/lib/types";
 import { getAllCandidatosReales, getPartidosReales, getDepartamentosReales, getCandidatoRealById } from "@/data/real/candidatos-reales";
 import { getAlertasByPersona } from "./alertas";
 
@@ -10,14 +10,13 @@ export async function getCandidatosMock(): Promise<CandidatoCompleto[]> {
   const { data: personas } = await supabase
     .schema("eoro")
     .from("personas")
-    .select("*")
-    .eq("tipo", "candidato");
+    .select("*");
 
   if (!personas?.length) return [];
 
   const personaIds = personas.map((p) => p.id);
 
-  const [candRes, cargosRes, declRes, antRes, vincRes, finRes, alertasRes, scoresRes] = await Promise.all([
+  const [candRes, cargosRes, declRes, antRes, vincRes, finRes, alertasRes, scoresRes, eoroRes] = await Promise.all([
     supabase.schema("eoro").from("candidaturas").select("*, partidos(*)").in("persona_id", personaIds).order("eleccion_year", { ascending: false }),
     supabase.schema("eoro").from("cargos_publicos").select("*").in("persona_id", personaIds).order("fecha_inicio", { ascending: false }),
     supabase.schema("eoro").from("declaraciones_patrimonio").select("*").in("persona_id", personaIds).order("anio"),
@@ -26,6 +25,7 @@ export async function getCandidatosMock(): Promise<CandidatoCompleto[]> {
     supabase.schema("eoro").from("financiacion_campana").select("*, candidaturas!inner(persona_id)").in("candidaturas.persona_id", personaIds),
     supabase.schema("eoro").from("alertas").select("*").in("persona_id", personaIds),
     supabase.schema("eoro").from("scores_transparencia").select("*").in("persona_id", personaIds),
+    supabase.schema("eoro").from("eoro_scores_cache").select("*").in("persona_id", personaIds),
   ]);
 
   const candidaturas = candRes.data ?? [];
@@ -36,6 +36,7 @@ export async function getCandidatosMock(): Promise<CandidatoCompleto[]> {
   const financiacion = finRes.data ?? [];
   const alertas = alertasRes.data ?? [];
   const scores = scoresRes.data ?? [];
+  const eoroScores = eoroRes.data ?? [];
 
   const results: CandidatoCompleto[] = [];
 
@@ -104,6 +105,7 @@ export async function getCandidatosMock(): Promise<CandidatoCompleto[]> {
         .filter((a) => a.persona_id === persona.id)
         .map((a) => ({ ...a, datos_soporte: a.datos_soporte ?? {} })),
       score,
+      eoro_score: (eoroScores.find((s) => s.persona_id === persona.id) as EoroScoreCache) ?? null,
     });
   }
 
@@ -134,7 +136,7 @@ export async function getCandidatoById(id: string): Promise<CandidatoCompleto | 
 
   if (!persona) return null;
 
-  const [candRes, cargosRes, declRes, antRes, vincRes, alertasRes, scoresRes] = await Promise.all([
+  const [candRes, cargosRes, declRes, antRes, vincRes, alertasRes, scoresRes, eoroRes] = await Promise.all([
     supabase.schema("eoro").from("candidaturas").select("*, partidos(*)").eq("persona_id", id).order("eleccion_year", { ascending: false }),
     supabase.schema("eoro").from("cargos_publicos").select("*").eq("persona_id", id).order("fecha_inicio", { ascending: false }),
     supabase.schema("eoro").from("declaraciones_patrimonio").select("*").eq("persona_id", id).order("anio"),
@@ -142,6 +144,7 @@ export async function getCandidatoById(id: string): Promise<CandidatoCompleto | 
     supabase.schema("eoro").from("vinculos_familiares").select("*").or(`persona_a_id.eq.${id},persona_b_id.eq.${id}`),
     supabase.schema("eoro").from("alertas").select("*").eq("persona_id", id),
     supabase.schema("eoro").from("scores_transparencia").select("*").eq("persona_id", id).maybeSingle(),
+    supabase.schema("eoro").from("eoro_scores_cache").select("*").eq("persona_id", id).maybeSingle(),
   ]);
 
   const candidaturas = candRes.data ?? [];
@@ -196,6 +199,7 @@ export async function getCandidatoById(id: string): Promise<CandidatoCompleto | 
     financiacion: finArr,
     alertas: (alertasRes.data ?? []).map((a) => ({ ...a, datos_soporte: a.datos_soporte ?? {} })),
     score,
+    eoro_score: (eoroRes.data as EoroScoreCache) ?? null,
   };
 }
 

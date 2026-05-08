@@ -37,7 +37,7 @@ export async function createEvaluacion(formData: FormData): Promise<void> {
   await recalculateEoroScore(persona_id);
 
   revalidatePath("/admin/eoro-evaluaciones");
-  revalidatePath(`/candidatos/${persona_id}`);
+  revalidatePath(`/presidenciales/${persona_id}`);
 }
 
 export async function updateEvaluacion(
@@ -69,7 +69,7 @@ export async function updateEvaluacion(
   if (persona_id) await recalculateEoroScore(persona_id);
 
   revalidatePath("/admin/eoro-evaluaciones");
-  revalidatePath(`/candidatos/${persona_id}`);
+  revalidatePath(`/presidenciales/${persona_id}`);
 }
 
 export async function deleteEvaluacion(
@@ -174,5 +174,5 @@ export async function recalculateAllScores(): Promise<void> {
   }
 
   revalidatePath("/admin/eoro-evaluaciones");
-  revalidatePath("/candidatos");
+  revalidatePath("/presidenciales");
 }

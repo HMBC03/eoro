@@ -87,7 +87,7 @@ export default function BuscarClient({ initialQuery, results }: Props) {
                 {results.personas.map((p) => (
                   <Link
                     key={p.id}
-                    href={`/candidatos/${p.id}`}
+                    href={`/presidenciales/${p.id}`}
                     className="flex items-center justify-between rounded-2xl bg-white border border-gray-100 px-5 py-3.5 hover:shadow-sm transition-shadow"
                   >
                     <div className="flex items-center gap-3">
@@ -150,7 +150,7 @@ export default function BuscarClient({ initialQuery, results }: Props) {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">{e.nombre}</p>
-                      <p className="text-[11px] text-gray-400">{e.tipo}</p>
+                      <p className="text-[11px] text-gray-400">{e.categoria}</p>
                     </div>
                   </div>
                 ))}
@@ -168,7 +168,7 @@ export default function BuscarClient({ initialQuery, results }: Props) {
                 {results.contratos.map((c) => (
                   <Link
                     key={c.id}
-                    href="/contratos"
+                    href="/gobierno"
                     className="block rounded-2xl bg-white border border-gray-100 px-5 py-3.5 hover:shadow-sm transition-shadow"
                   >
                     <p className="text-sm font-medium text-gray-900 line-clamp-1">{c.objeto}</p>

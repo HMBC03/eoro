@@ -35,20 +35,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Eoro",
     description:
-      "Conoce a quienes te gobiernan. Datos abiertos de candidatos y funcionarios publicos.",
+      "Centro de monitoreo recursos publicos",
     locale: "es_CO",
     type: "website",
   },
 };
 
 const MODULE_HREF_MAP: Record<string, string> = {
-  candidatos: "/candidatos",
-  gobierno: "/gobierno",
+  gubernamentales: "/gobierno",
   mapa: "/mapa",
-  contratos: "/contratos",
   conexiones: "/conexiones",
-  presupuesto: "/presupuesto",
   historial: "/historial",
+  administrativas: "/admin",
+  contribue: "/contribuye",
+  polis: "/polis",
 };
 
 export default async function RootLayout({

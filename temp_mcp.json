@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/execute",
+  "params": {
+    "sql": "DROP TABLE IF EXISTS eoro.entidades_presupuestales, eoro.ramas_gobierno;"
+  }
+}

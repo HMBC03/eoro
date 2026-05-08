@@ -1,170 +1,160 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { cn } from "@/lib/utils";
-import type { FuncionarioGobierno } from "./page";
+import Link from "next/link";
+import { cn, getInitials } from "@/lib/utils";
+import { formatCOP, formatCOPShort } from "@/lib/formatters";
+import type { EntidadEstado, FuncionarioGobierno, ContratoConVotos, RamaGobierno } from "@/lib/types";
 
-type Rama = "todos" | "ejecutivo" | "legislativo" | "judicial" | "control" | "electoral";
+type Tab = "mapa" | "funcionarios" | "contratos" | "presupuesto";
 
-const RAMA_TABS: { value: Rama; label: string; icon: React.ReactNode }[] = [
+const TABS: { value: Tab; label: string; icon: React.ReactNode }[] = [
   {
-    value: "todos",
-    label: "Todos",
+    value: "mapa",
+    label: "Mapa",
     icon: (
-      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
       </svg>
     ),
   },
   {
-    value: "ejecutivo",
-    label: "Ejecutivo",
+    value: "funcionarios",
+    label: "Funcionarios",
     icon: (
-      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
   },
   {
-    value: "legislativo",
-    label: "Legislativo",
+    value: "contratos",
+    label: "Contratos",
     icon: (
-      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2M5 21H3" />
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
       </svg>
     ),
   },
   {
-    value: "judicial",
-    label: "Judicial",
+    value: "presupuesto",
+    label: "Presupuesto",
     icon: (
-      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
-      </svg>
-    ),
-  },
-  {
-    value: "control",
-    label: "Control",
-    icon: (
-      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0-11V3" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945a8 8 0 01-.745 4.785l-.45.433a5.5 5.5 0 007.182 7.182l.45-.433a8 8 0 01.745-4.785L21 16v-2a2 2 0 00-2-2h-1.945a8 8 0 01-.745-4.785l-.45-.433a5.5 5.5 0 00-7.182-7.182l.45.433A8 8 0 013.055 11z" />
       </svg>
     ),
   },
 ];
 
-const RAMA_COLORS: Record<string, string> = {
-  ejecutivo: "bg-blue-50 text-blue-700",
-  legislativo: "bg-purple-50 text-purple-700",
-  judicial: "bg-amber-50 text-amber-700",
-  control: "bg-emerald-50 text-emerald-700",
-  electoral: "bg-rose-50 text-rose-700",
-};
+const CATEGORIAS = [
+  { key: "recaudo", label: "Recaudo e Ingresos", color: "#10B981", emoji: "💰" },
+  { key: "presupuesto", label: "Presupuesto y Ejecución", color: "#3B82F6", emoji: "📊" },
+  { key: "contratacion", label: "Contratación Pública", color: "#8B5CF6", emoji: "🏛" },
+  { key: "control", label: "Órganos de Control", color: "#EF4444", emoji: "🔎" },
+  { key: "activos", label: "Gestión de Activos", color: "#F59E0B", emoji: "📦" },
+  { key: "datos", label: "Datos Abiertos", color: "#06B6D4", emoji: "📂" },
+];
 
-const RAMA_LABELS: Record<string, string> = {
-  ejecutivo: "Rama Ejecutiva",
-  legislativo: "Rama Legislativa",
-  judicial: "Rama Judicial",
-  control: "Organos de Control",
-  electoral: "Organizacion Electoral",
-};
+interface GobiernoClientProps {
+  entidades: EntidadEstado[];
+  funcionarios: FuncionarioGobierno[];
+  contratos: ContratoConVotos[];
+  presupuesto: RamaGobierno[];
+}
 
-export default function GobiernoClient({ funcionarios }: { funcionarios: FuncionarioGobierno[] }) {
-  const [ramaFiltro, setRamaFiltro] = useState<Rama>("todos");
+export default function GobiernoClient({
+  entidades,
+  funcionarios,
+  contratos,
+  presupuesto,
+}: GobiernoClientProps) {
+  const [activeTab, setActiveTab] = useState<Tab>("mapa");
   const [busqueda, setBusqueda] = useState("");
+  const [filtroRama, setFiltroRama] = useState<string>("todos");
 
-  const counts = useMemo(() => {
-    const c: Record<string, number> = { todos: funcionarios.length };
-    funcionarios.forEach((f) => {
-      c[f.rama] = (c[f.rama] ?? 0) + 1;
-    });
-    return c;
-  }, [funcionarios]);
+  const entidadesFiltradas = useMemo(() => {
+    if (!busqueda.trim()) return entidades;
+    const q = busqueda.toLowerCase();
+    return entidades.filter(
+      (e) =>
+        e.nombre.toLowerCase().includes(q) ||
+        e.sigla?.toLowerCase().includes(q) ||
+        e.subcategoria?.toLowerCase().includes(q)
+    );
+  }, [entidades, busqueda]);
 
-  const filtered = useMemo(() => {
-    let result = [...funcionarios];
-    if (ramaFiltro !== "todos") {
-      result = result.filter((f) => f.rama === ramaFiltro);
+  const entidadesAgrupadas = useMemo(() => {
+    const grupos: Record<string, EntidadEstado[]> = {};
+    for (const cat of CATEGORIAS) {
+      grupos[cat.key] = entidadesFiltradas.filter((e) => e.categoria === cat.key);
+    }
+    return grupos;
+  }, [entidadesFiltradas]);
+
+  const funcionariosFiltrados = useMemo(() => {
+    let resultado = [...funcionarios];
+    if (filtroRama !== "todos") {
+      resultado = resultado.filter((f) => f.rama === filtroRama);
     }
     if (busqueda.trim()) {
       const q = busqueda.toLowerCase();
-      result = result.filter(
+      resultado = resultado.filter(
         (f) =>
           f.persona.nombre_completo.toLowerCase().includes(q) ||
           f.cargo.toLowerCase().includes(q) ||
           f.entidad.toLowerCase().includes(q)
       );
     }
-    return result;
-  }, [funcionarios, ramaFiltro, busqueda]);
+    return resultado;
+  }, [funcionarios, filtroRama, busqueda]);
 
-  // Group by rama for display
-  const grouped = useMemo(() => {
-    const groups: Record<string, FuncionarioGobierno[]> = {};
-    filtered.forEach((f) => {
-      if (!groups[f.rama]) groups[f.rama] = [];
-      groups[f.rama].push(f);
-    });
-    return groups;
-  }, [filtered]);
-
-  const ramaOrder = ["ejecutivo", "legislativo", "judicial", "control", "electoral"];
+  const totalPGN = presupuesto.reduce((sum, r) => sum + r.presupuesto_total, 0);
 
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="px-6 pt-8 pb-6">
+      <div className="px-6 pt-8 pb-4">
         <div className="mx-auto max-w-[1400px]">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h1 className="text-3xl font-light text-gray-900 sm:text-4xl">
-                Gobierno <span className="font-bold">Actual</span>
-              </h1>
-              <p className="mt-2 text-sm text-gray-400">
-                {funcionarios.length} funcionarios en ejercicio — Ramas del poder publico
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#c4e615] px-3 py-1.5 text-xs font-semibold text-gray-900">
-              <span className="h-1.5 w-1.5 rounded-full bg-gray-900 animate-pulse" />
-              Periodo actual
-            </span>
-          </div>
+          <h1 className="text-3xl font-light text-gray-900 sm:text-4xl">
+            Gobierno <span className="font-bold">Unificado</span>
+          </h1>
+          <p className="mt-2 text-sm text-gray-400">
+            Mapa de entidades del Estado, funcionarios, contratos y presupuesto
+          </p>
+        </div>
+      </div>
 
-          {/* Pill tabs */}
-          <div className="mt-6 inline-flex flex-wrap rounded-full bg-gray-100/70 p-1">
-            {RAMA_TABS.map((tab) => (
+      {/* Tabs */}
+      <div className="sticky top-[60px] z-30 px-6 pb-4">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="inline-flex rounded-full bg-gray-100/70 p-1">
+            {TABS.map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => setRamaFiltro(tab.value)}
+                onClick={() => setActiveTab(tab.value as Tab)}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all",
-                  ramaFiltro === tab.value
+                  "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all",
+                  activeTab === tab.value
                     ? "bg-gray-900 text-white shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
+                    : "text-gray-500 hover:text-gray-900"
                 )}
               >
-                <span className={cn(ramaFiltro === tab.value ? "text-[#c4e615]" : "text-gray-400")}>
-                  {tab.icon}
-                </span>
+                {tab.icon}
                 {tab.label}
-                {(counts[tab.value] ?? 0) > 0 && (
-                  <span className="ml-1 text-[11px] text-gray-400">
-                    {counts[tab.value]}
-                  </span>
-                )}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Search bar */}
-      <div className="sticky top-[60px] z-30 px-4 py-2">
-        <div className="mx-auto max-w-[1400px] rounded-3xl bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-sm px-5 py-3">
+      {/* Search Bar */}
+      <div className="px-6 pb-4">
+        <div className="mx-auto max-w-[1400px]">
           <div className="relative">
             <svg
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
@@ -176,92 +166,243 @@ export default function GobiernoClient({ funcionarios }: { funcionarios: Funcion
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              placeholder="Buscar por nombre, cargo o entidad..."
-              className="h-9 w-full rounded-lg border border-gray-200/60 bg-gray-50/80 pl-9 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
+              placeholder="Buscar entidades, funcionarios, contratos..."
+              className="w-full h-12 rounded-2xl border border-gray-200 bg-white pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 shadow-sm"
             />
           </div>
         </div>
       </div>
 
-      {/* Results */}
-      <div className="mx-auto max-w-[1400px] px-6 py-6">
-        {filtered.length === 0 ? (
-          <div className="py-20 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100">
-              <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-              </svg>
-            </div>
-            <p className="mt-4 text-gray-500">
-              {funcionarios.length === 0
-                ? "Aun no hay funcionarios registrados. Agregue cargos desde el panel de administracion con rama asignada y sin fecha de finalizacion."
-                : "No se encontraron funcionarios con esos filtros."}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-10">
-            {ramaOrder.map((rama) => {
-              const group = grouped[rama];
-              if (!group || group.length === 0) return null;
+      {/* === CONTENIDO POR PESTAÑA === */}
 
-              return (
-                <section key={rama}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", RAMA_COLORS[rama])}>
-                      {RAMA_LABELS[rama]}
-                    </span>
-                    <span className="text-xs text-gray-400">{group.length} funcionarios</span>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {group.map((f) => (
+      {/* TAB: MAPA (vista principal) */}
+      {activeTab === "mapa" && (
+        <div className="mx-auto max-w-[1400px] px-6 pb-12">
+          {CATEGORIAS.map((cat) => (
+            <div key={cat.key} className="mb-10">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xl">{cat.emoji}</span>
+                <h2 className="text-lg font-semibold" style={{ color: cat.color }}>
+                  {cat.label}
+                </h2>
+                <span className="text-xs text-gray-400">
+                  ({entidadesAgrupadas[cat.key].length} entidades)
+                </span>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {entidadesAgrupadas[cat.key].map((ent) => (
+                  <a
+                    key={ent.id}
+                    href={ent.url_datos || "#"}
+                    target={ent.url_datos ? "_blank" : undefined}
+                    rel={ent.url_datos ? "noopener noreferrer" : undefined}
+                    className="group block rounded-2xl bg-white p-4 border border-gray-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                  >
+                    <div className="flex items-start gap-3">
                       <div
-                        key={f.id}
-                        className="rounded-2xl bg-white border border-gray-100 p-4 hover:shadow-sm transition-shadow"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold text-white"
+                        style={{ backgroundColor: ent.color_hex || cat.color }}
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-base font-bold text-gray-500 shrink-0">
-                            {f.persona.nombre_completo.charAt(0)}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-semibold text-gray-900 truncate">
-                              {f.persona.nombre_completo}
-                            </p>
-                            <p className="text-[12px] text-gray-500 mt-0.5 truncate">{f.cargo}</p>
-                            <p className="text-[11px] text-gray-400 truncate">{f.entidad}</p>
-                          </div>
-                        </div>
-
-                        <div className="mt-3 flex items-center gap-2 flex-wrap">
-                          <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold", RAMA_COLORS[f.rama])}>
-                            {f.rama}
-                          </span>
-                          {f.partido && (
-                            <span
-                              className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                              style={{
-                                backgroundColor: `${f.partido.color_hex}20`,
-                                color: f.partido.color_hex,
-                              }}
-                            >
-                              {f.partido.nombre}
-                            </span>
-                          )}
-                          {f.persona.departamento_origen && (
-                            <span className="text-[10px] text-gray-400">
-                              {f.persona.departamento_origen}
-                            </span>
-                          )}
-                        </div>
+                        {ent.sigla?.slice(0, 2) || ent.nombre.slice(0, 2)}
                       </div>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-sm font-semibold text-gray-900 truncate group-hover:text-gray-600">
+                          {ent.nombre}
+                        </h3>
+                        {ent.sigla && (
+                          <p className="text-xs text-gray-400">{ent.sigla}</p>
+                        )}
+                        {ent.subcategoria && (
+                          <span className="mt-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-500">
+                            {ent.subcategoria}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {ent.num_contratos > 0 && (
+                      <div className="mt-3 pt-3 border-t border-gray-50">
+                        <p className="text-xs text-gray-400">
+                          {ent.num_contratos} contratos · {formatCOPShort(ent.valor_contratos)}
+                        </p>
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </div>
+              {entidadesAgrupadas[cat.key].length === 0 && (
+                <p className="text-sm text-gray-400 py-4">
+                  No hay entidades en esta categoría
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* TAB: FUNCIONARIOS */}
+      {activeTab === "funcionarios" && (
+        <div className="mx-auto max-w-[1400px] px-6 pb-12">
+          <div className="mb-4 flex items-center gap-2">
+            <select
+              value={filtroRama}
+              onChange={(e) => setFiltroRama(e.target.value)}
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm"
+            >
+              <option value="todos">Todas las ramas</option>
+              <option value="ejecutivo">Ejecutivo</option>
+              <option value="legislativo">Legislativo</option>
+              <option value="judicial">Judicial</option>
+              <option value="control">Control</option>
+            </select>
+            <span className="text-sm text-gray-400">
+              {funcionariosFiltrados.length} funcionarios
+            </span>
           </div>
-        )}
-      </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {funcionariosFiltrados.map((f) => (
+              <div
+                key={f.id}
+                className="flex items-start gap-3 rounded-2xl bg-white p-4 border border-gray-100 shadow-sm"
+              >
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold text-white"
+                  style={{
+                    backgroundColor: f.partido?.color_hex || "#6B7280",
+                  }}
+                >
+                  {getInitials(f.persona.nombre_completo)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm font-semibold text-gray-900 truncate">
+                    {f.persona.nombre_completo}
+                  </h3>
+                  <p className="text-xs text-gray-500 truncate">{f.cargo}</p>
+                  <p className="text-xs text-gray-400 truncate">{f.entidad}</p>
+                  <span className="mt-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-500 capitalize">
+                    {f.rama}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB: CONTRATOS */}
+      {activeTab === "contratos" && (
+        <div className="mx-auto max-w-[1400px] px-6 pb-12">
+          <div className="mb-4 flex items-center gap-4 text-sm text-gray-400">
+            <span>{contratos.length} contratos</span>
+            <span>
+              Valor total:{" "}
+              {formatCOP(contratos.reduce((s, c) => s + c.valor_contrato, 0))}
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
+                  <th className="pb-3 font-medium">Entidad</th>
+                  <th className="pb-3 font-medium">Contratista</th>
+                  <th className="pb-3 font-medium">Objeto</th>
+                  <th className="pb-3 font-medium text-right">Valor</th>
+                  <th className="pb-3 font-medium">Estado</th>
+                  <th className="pb-3 font-medium">Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contratos.slice(0, 100).map((c) => (
+                  <tr key={c.id} className="border-b border-gray-50 last:border-0">
+                    <td className="py-3 text-sm text-gray-600">{c.entidad_nombre}</td>
+                    <td className="py-3 text-sm text-gray-600">{c.contratista_nombre}</td>
+                    <td className="py-3 text-sm text-gray-500 max-w-xs truncate">
+                      {c.objeto}
+                    </td>
+                    <td className="py-3 text-sm text-gray-700 text-right font-medium">
+                      {formatCOPShort(c.valor_contrato)}
+                    </td>
+                    <td className="py-3">
+                      <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-500">
+                        {c.estado}
+                      </span>
+                    </td>
+                    <td className="py-3 text-sm text-gray-400">{c.fecha_firma}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: PRESUPUESTO */}
+      {activeTab === "presupuesto" && (
+        <div className="mx-auto max-w-[1400px] px-6 pb-12">
+          <div className="mb-6 flex items-center gap-4">
+            <div className="rounded-2xl bg-emerald-50 px-5 py-3">
+              <p className="text-2xl font-bold text-emerald-700">
+                {formatCOP(totalPGN)}
+              </p>
+              <p className="text-xs text-emerald-600">Presupuesto General de la Nación</p>
+            </div>
+            <div className="rounded-2xl bg-blue-50 px-5 py-3">
+              <p className="text-2xl font-bold text-blue-700">
+                {presupuesto.length} ramas
+              </p>
+              <p className="text-xs text-blue-600">Ramas del poder público</p>
+            </div>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {presupuesto.map((rama) => (
+              <div
+                key={rama.id}
+                className="rounded-2xl bg-white p-5 border border-gray-100 shadow-sm"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="font-semibold text-gray-900">{rama.nombre}</h3>
+                  <span className="text-sm font-medium text-gray-900">
+                    {formatCOP(rama.presupuesto_total)}
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gray-900"
+                    style={{ width: `${rama.porcentaje_pgn}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-gray-400">
+                  {rama.porcentaje_pgn}% del PGN · {rama.entidades.length} entidades
+                </p>
+                {rama.entidades.length > 0 && (
+                  <div className="mt-4 border-t border-gray-50 pt-3">
+                    <p className="mb-2 text-xs font-medium text-gray-400">
+                      Entidades:
+                    </p>
+                    <div className="space-y-1">
+                      {rama.entidades.slice(0, 5).map((e) => (
+                        <div
+                          key={e.id}
+                          className="flex items-center justify-between text-xs"
+                        >
+                          <span className="text-gray-600 truncate">{e.nombre}</span>
+                          <span className="text-gray-400">
+                            {e.porcentaje_ejecucion}%
+                          </span>
+                        </div>
+                      ))}
+                      {rama.entidades.length > 5 && (
+                        <p className="text-xs text-gray-400">
+                          +{rama.entidades.length - 5} más...
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

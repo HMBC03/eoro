@@ -63,9 +63,9 @@ export function DepartmentPanel({ stats, candidates, onClose }: DepartmentPanelP
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2 p-4">
         <StatCard
-          label="Candidatos"
-          value={stats.numCandidatos}
-          detail={`${stats.numSenado} Sen · ${stats.numCamara} Cam`}
+          label="Presidenciales"
+          value={stats.numPresidenciales}
+          detail=""
           bg="bg-emerald-50"
           text="text-emerald-700"
         />
@@ -117,7 +117,7 @@ export function DepartmentPanel({ stats, candidates, onClose }: DepartmentPanelP
           {displayCandidates.map((c) => (
             <Link
               key={c.persona.id}
-              href={`/candidatos/${c.persona.id}`}
+              href={`/presidenciales/${c.persona.id}`}
               className="flex items-center gap-2.5 rounded-xl px-2.5 py-2 hover:bg-gray-50 transition-colors group"
             >
               <div
@@ -146,7 +146,7 @@ export function DepartmentPanel({ stats, candidates, onClose }: DepartmentPanelP
         {/* Link to full list */}
         <div className="border-t border-gray-100 p-3">
           <Link
-            href={`/candidatos?depto=${encodeURIComponent(stats.nombre)}`}
+            href={`/presidenciales?depto=${encodeURIComponent(stats.nombre)}`}
             className="block w-full text-center rounded-xl bg-gray-900 text-white text-xs font-medium py-2.5 hover:bg-gray-800 transition-colors"
           >
             Ver todos en {stats.nombre}

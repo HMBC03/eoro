@@ -15,6 +15,11 @@ export const SECOP_ENDPOINTS = {
   secop_integrado: `${SECOP_BASE_URL}/rpmr-utcd.json`,
 };
 
+// --- Senado API ---
+export const SENADO_API_URL = "https://app.senado.gov.co/backend/api/public/v1/senators?format=json";
+export const SENADO_ASISTENCIAS_URL = "https://app.senado.gov.co/backend/api/public/v1/assistances";
+export const SENADO_COMISIONES_URL = "https://app.senado.gov.co/backend/api/public/v1/commissions?format=json";
+
 // --- Other data source URLs ---
 export const DATA_SOURCES = {
   api_electoral: "https://apielectoral.co",
@@ -75,15 +80,14 @@ export const EORO_RESTORATION_RULES: Record<string, number> = {
 // --- Navigation items ---
 export const NAV_ITEMS = [
   { label: "Inicio", href: "/", icon: "home" },
-  { label: "Candidatos 2026", href: "/candidatos", icon: "users" },
+  { label: "Senado", href: "/senado", icon: "users" },
+  { label: "Presidenciales 2026", href: "/presidenciales", icon: "users" },
   { label: "Gobierno", href: "/gobierno", icon: "landmark" },
   { label: "Mapa", href: "/mapa", icon: "map" },
-  { label: "Contratos", href: "/contratos", icon: "file-text" },
   { label: "Conexiones", href: "/conexiones", icon: "network" },
-  { label: "Presupuesto", href: "/presupuesto", icon: "banknote" },
   { label: "Historial", href: "/historial", icon: "clock" },
   { label: "Contribuye", href: "/contribuye", icon: "heart" },
-  { label: "Polis", href: "/polis", icon: "message-circle" },
+  { label: "Datos", href: "/datos", icon: "database" },
 ] as const;
 
 // --- Legal disclaimer ---

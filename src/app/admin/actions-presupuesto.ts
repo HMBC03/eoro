@@ -4,66 +4,34 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "./_lib/require-admin";
 
 // ============================================================
-// RAMAS GOBIERNO
-// ============================================================
-
-export async function createRama(formData: FormData): Promise<void> {
-  const { supabase } = await requireAdmin();
-
-  const nombre = formData.get("nombre") as string;
-  const presupuesto_total = Number(formData.get("presupuesto_total")) || 0;
-  const porcentaje_pgn = Number(formData.get("porcentaje_pgn")) || 0;
-
-  if (!nombre) return;
-
-  await supabase.schema("eoro").from("ramas_gobierno").insert({
-    nombre,
-    presupuesto_total,
-    porcentaje_pgn,
-  });
-
-  revalidatePath("/admin/ramas");
-}
-
-export async function updateRama(id: string, formData: FormData): Promise<void> {
-  const { supabase } = await requireAdmin();
-  await supabase.schema("eoro").from("ramas_gobierno").update({
-    nombre: formData.get("nombre") as string,
-    presupuesto_total: Number(formData.get("presupuesto_total")) || 0,
-    porcentaje_pgn: Number(formData.get("porcentaje_pgn")) || 0,
-  }).eq("id", id);
-  revalidatePath("/admin/ramas");
-}
-
-export async function deleteRama(id: string): Promise<void> {
-  const { supabase } = await requireAdmin();
-  await supabase.schema("eoro").from("ramas_gobierno").delete().eq("id", id);
-  revalidatePath("/admin/ramas");
-}
-
-// ============================================================
-// ENTIDADES PRESUPUESTALES
+// ENTIDADES DEL ESTADO (nuevo modelo)
 // ============================================================
 
 export async function createEntidad(formData: FormData): Promise<void> {
   const { supabase } = await requireAdmin();
 
   const nombre = formData.get("nombre") as string;
-  const tipo = formData.get("tipo") as string;
-  const rama_id = formData.get("rama_id") as string;
+  const sigla = formData.get("sigla") as string;
+  const categoria = formData.get("categoria") as string;
+  const subcategoria = formData.get("subcategoria") as string;
+  const nit = formData.get("nit") as string;
   const presupuesto_asignado = Number(formData.get("presupuesto_asignado")) || 0;
-  const ejecutado = Number(formData.get("ejecutado")) || 0;
+  const presupuesto_ejecutado = Number(formData.get("presupuesto_ejecutado")) || 0;
   const porcentaje_ejecucion = Number(formData.get("porcentaje_ejecucion")) || 0;
+  const color_hex = formData.get("color_hex") as string || "#374151";
 
-  if (!nombre || !tipo || !rama_id) return;
+  if (!nombre || !categoria) return;
 
-  await supabase.schema("eoro").from("entidades_presupuestales").insert({
+  await supabase.schema("eoro").from("entidad_estado").insert({
     nombre,
-    tipo,
-    rama_id,
+    sigla,
+    categoria,
+    subcategoria,
+    nit,
     presupuesto_asignado,
-    ejecutado,
+    presupuesto_ejecutado,
     porcentaje_ejecucion,
+    color_hex,
   });
 
   revalidatePath("/admin/entidades");
@@ -71,20 +39,23 @@ export async function createEntidad(formData: FormData): Promise<void> {
 
 export async function updateEntidad(id: string, formData: FormData): Promise<void> {
   const { supabase } = await requireAdmin();
-  await supabase.schema("eoro").from("entidades_presupuestales").update({
+  await supabase.schema("eoro").from("entidad_estado").update({
     nombre: formData.get("nombre") as string,
-    tipo: formData.get("tipo") as string,
-    rama_id: formData.get("rama_id") as string,
+    sigla: formData.get("sigla") as string,
+    categoria: formData.get("categoria") as string,
+    subcategoria: formData.get("subcategoria") as string,
+    nit: formData.get("nit") as string,
     presupuesto_asignado: Number(formData.get("presupuesto_asignado")) || 0,
-    ejecutado: Number(formData.get("ejecutado")) || 0,
+    presupuesto_ejecutado: Number(formData.get("presupuesto_ejecutado")) || 0,
     porcentaje_ejecucion: Number(formData.get("porcentaje_ejecucion")) || 0,
+    color_hex: formData.get("color_hex") as string,
   }).eq("id", id);
   revalidatePath("/admin/entidades");
 }
 
 export async function deleteEntidad(id: string): Promise<void> {
   const { supabase } = await requireAdmin();
-  await supabase.schema("eoro").from("entidades_presupuestales").delete().eq("id", id);
+  await supabase.schema("eoro").from("entidad_estado").delete().eq("id", id);
   revalidatePath("/admin/entidades");
 }
 

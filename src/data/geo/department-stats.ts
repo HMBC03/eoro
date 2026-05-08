@@ -2,7 +2,7 @@
 // Department statistics aggregated from real candidate data
 // ============================================================
 
-import { getAllCandidatosReales } from "@/data/real/candidatos-reales";
+import { getPresidenciales2026 } from "@/data/mock/presidenciales-2026";
 import { DEPARTMENT_MAP, getDeptByNombre } from "./department-map";
 
 export type MapMetric = "candidatos" | "contratos" | "alertas";
@@ -13,8 +13,7 @@ export interface DepartmentStats {
   nombre: string;
   capital: string;
   numCandidatos: number;
-  numSenado: number;
-  numCamara: number;
+  numPresidenciales: number;
   topPartidos: { nombre: string; sigla: string; color: string; count: number }[];
   numContratos: number;
   valorContratos: number;
@@ -26,13 +25,11 @@ export interface DepartmentStats {
 let _statsMap: Map<string, DepartmentStats> | null = null;
 
 function buildStats(): Map<string, DepartmentStats> {
-  const candidatos = getAllCandidatosReales();
+  const candidatos = getPresidenciales2026();
 
-  // Group candidates by department
   const byDept = new Map<string, typeof candidatos>();
   for (const c of candidatos) {
     const dep = c.persona.departamento_origen;
-    // Skip national/international (no geographic department)
     if (dep === "Colombia" || dep === "Internacional") continue;
     const arr = byDept.get(dep) || [];
     arr.push(c);
@@ -45,11 +42,9 @@ function buildStats(): Map<string, DepartmentStats> {
     const deptCandidatos = byDept.get(mapping.nombre) || [];
     const numCandidatos = deptCandidatos.length;
 
-    // Count by corporation type
-    const numSenado = deptCandidatos.filter(
-      (c) => c.candidatura_actual.tipo === "senado"
+    const numPresidenciales = deptCandidatos.filter(
+      (c) => c.candidatura_actual.tipo === "presidencia"
     ).length;
-    const numCamara = numCandidatos - numSenado;
 
     // Top parties
     const partyCount = new Map<string, { nombre: string; sigla: string; color: string; count: number }>();
@@ -83,8 +78,7 @@ function buildStats(): Map<string, DepartmentStats> {
       nombre: mapping.nombre,
       capital: mapping.capital,
       numCandidatos,
-      numSenado,
-      numCamara,
+      numPresidenciales,
       topPartidos,
       numContratos,
       valorContratos,

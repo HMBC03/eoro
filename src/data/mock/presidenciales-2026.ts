@@ -93,62 +93,7 @@ const personas: Persona[] = [
     created_at: "2025-06-01",
     updated_at: "2026-02-20",
   },
-  {
-    id: "pres05",
-    cedula: "7900005005",
-    nombre_completo: "Vicky Davila Hoyos",
-    fecha_nacimiento: "1972-01-28",
-    departamento_origen: "Santander",
-    foto_url: null,
 
-    biografia:
-      "Periodista y directora de medios. Conocida por investigaciones periodisticas. Fundadora del Movimiento Valientes. Primera candidatura politica.",
-    redes_sociales: { twitter: "@VickyDavilaH" },
-    created_at: "2025-06-01",
-    updated_at: "2026-02-20",
-  },
-  {
-    id: "pres06",
-    cedula: "7900006006",
-    nombre_completo: "Claudia Lopez Hernandez",
-    fecha_nacimiento: "1970-09-23",
-    departamento_origen: "Bogota D.C.",
-    foto_url: null,
-
-    biografia:
-      "Politologa, exsenadora y exalcaldesa de Bogota (2020-2023). Primera mujer alcaldesa de Bogota. Anticorrupcion, centro-izquierda verde.",
-    redes_sociales: { twitter: "@ClaudiaLopez" },
-    created_at: "2025-06-01",
-    updated_at: "2026-02-20",
-  },
-  {
-    id: "pres07",
-    cedula: "7900007007",
-    nombre_completo: "Roy Leonardo Barreras Montealegre",
-    fecha_nacimiento: "1958-06-16",
-    departamento_origen: "Valle del Cauca",
-    foto_url: null,
-
-    biografia:
-      "Medico cirujano, exsenador (multiples periodos), presidente del Senado 2022-2023. Impulsor del acuerdo de paz. Ha pasado por multiples partidos politicos.",
-    redes_sociales: { twitter: "@RoyBarreras" },
-    created_at: "2025-06-01",
-    updated_at: "2026-02-20",
-  },
-  {
-    id: "pres08",
-    cedula: "7900008008",
-    nombre_completo: "Daniel Quintero Calle",
-    fecha_nacimiento: "1980-01-20",
-    departamento_origen: "Antioquia",
-    foto_url: null,
-
-    biografia:
-      "Ingeniero y exalcalde de Medellin (2020-2023). Gestion polemica con suspension temporal. Se identifica como independiente de izquierda.",
-    redes_sociales: { twitter: "@QuinteroCalle" },
-    created_at: "2025-06-01",
-    updated_at: "2026-02-20",
-  },
 ];
 
 // --- Familiares politicos (para dinastias) ---
@@ -206,10 +151,6 @@ const candidaturas: Candidatura[] = [
   { id: "pcand02", persona_id: "pres02", eleccion_year: 2026, tipo: "presidencia", partido_id: "ind_der", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
   { id: "pcand03", persona_id: "pres03", eleccion_year: 2026, tipo: "presidencia", partido_id: "dyc", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
   { id: "pcand04", persona_id: "pres04", eleccion_year: 2026, tipo: "presidencia", partido_id: "cd", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
-  { id: "pcand05", persona_id: "pres05", eleccion_year: 2026, tipo: "presidencia", partido_id: "mv", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
-  { id: "pcand06", persona_id: "pres06", eleccion_year: 2026, tipo: "presidencia", partido_id: "av", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
-  { id: "pcand07", persona_id: "pres07", eleccion_year: 2026, tipo: "presidencia", partido_id: "lf", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
-  { id: "pcand08", persona_id: "pres08", eleccion_year: 2026, tipo: "presidencia", partido_id: "ai", circunscripcion: "Nacional", votos_obtenidos: null, elegido: false, estado: "inscrito", fuente: "Registraduria" },
   // Historical
   { id: "phist01", persona_id: "pres01", eleccion_year: 2014, tipo: "senado", partido_id: "ph", circunscripcion: "Nacional", votos_obtenidos: 98_432, elegido: true, estado: "electo", fuente: "CEDAE" },
   { id: "phist02", persona_id: "pres01", eleccion_year: 2018, tipo: "senado", partido_id: "ph", circunscripcion: "Nacional", votos_obtenidos: 125_876, elegido: true, estado: "electo", fuente: "CEDAE" },
@@ -219,9 +160,6 @@ const candidaturas: Candidatura[] = [
   { id: "phist06", persona_id: "pres04", eleccion_year: 2014, tipo: "senado", partido_id: "cd", circunscripcion: "Nacional", votos_obtenidos: 67_890, elegido: true, estado: "electo", fuente: "CEDAE" },
   { id: "phist07", persona_id: "pres04", eleccion_year: 2018, tipo: "senado", partido_id: "cd", circunscripcion: "Nacional", votos_obtenidos: 89_120, elegido: true, estado: "electo", fuente: "CEDAE" },
   { id: "phist08", persona_id: "pres04", eleccion_year: 2022, tipo: "senado", partido_id: "cd", circunscripcion: "Nacional", votos_obtenidos: 102_345, elegido: true, estado: "electo", fuente: "CEDAE" },
-  { id: "phist09", persona_id: "pres06", eleccion_year: 2018, tipo: "presidencia", partido_id: "av", circunscripcion: "Nacional", votos_obtenidos: 2_200_000, elegido: false, estado: "inscrito", fuente: "CEDAE" },
-  { id: "phist10", persona_id: "pres07", eleccion_year: 2018, tipo: "senado", partido_id: "pu", circunscripcion: "Nacional", votos_obtenidos: 78_900, elegido: true, estado: "electo", fuente: "CEDAE" },
-  { id: "phist11", persona_id: "pres07", eleccion_year: 2022, tipo: "senado", partido_id: "ph", circunscripcion: "Nacional", votos_obtenidos: 95_600, elegido: true, estado: "electo", fuente: "CEDAE" },
 ];
 
 // ============================================================
@@ -233,11 +171,6 @@ const cargos: CargoPublico[] = [
   { id: "pcar02", persona_id: "pres03", cargo: "Alcalde de Medellin", entidad: "Alcaldia de Medellin", departamento: "Antioquia", municipio: "Medellin", fecha_inicio: "2004-01-01", fecha_fin: "2007-12-31", partido_id: "av", nivel: "municipal", fuente: "SIGEP" },
   { id: "pcar03", persona_id: "pres03", cargo: "Gobernador de Antioquia", entidad: "Gobernacion de Antioquia", departamento: "Antioquia", municipio: "Medellin", fecha_inicio: "2012-01-01", fecha_fin: "2015-12-31", partido_id: "av", nivel: "departamental", fuente: "SIGEP" },
   { id: "pcar04", persona_id: "pres04", cargo: "Senadora de la Republica", entidad: "Senado", departamento: "Bogota D.C.", municipio: "Bogota", fecha_inicio: "2014-07-20", fecha_fin: null, partido_id: "cd", nivel: "nacional", fuente: "SIGEP" },
-  { id: "pcar05", persona_id: "pres06", cargo: "Senadora de la Republica", entidad: "Senado", departamento: "Bogota D.C.", municipio: "Bogota", fecha_inicio: "2014-07-20", fecha_fin: "2018-07-20", partido_id: "av", nivel: "nacional", fuente: "SIGEP" },
-  { id: "pcar06", persona_id: "pres06", cargo: "Alcaldesa de Bogota", entidad: "Alcaldia de Bogota", departamento: "Bogota D.C.", municipio: "Bogota", fecha_inicio: "2020-01-01", fecha_fin: "2023-12-31", partido_id: "av", nivel: "municipal", fuente: "SIGEP" },
-  { id: "pcar07", persona_id: "pres07", cargo: "Senador de la Republica", entidad: "Senado", departamento: "Bogota D.C.", municipio: "Bogota", fecha_inicio: "2006-07-20", fecha_fin: "2022-07-20", partido_id: "pu", nivel: "nacional", fuente: "SIGEP" },
-  { id: "pcar08", persona_id: "pres07", cargo: "Presidente del Senado", entidad: "Senado", departamento: "Bogota D.C.", municipio: "Bogota", fecha_inicio: "2022-07-20", fecha_fin: "2023-07-20", partido_id: "ph", nivel: "nacional", fuente: "SIGEP" },
-  { id: "pcar09", persona_id: "pres08", cargo: "Alcalde de Medellin", entidad: "Alcaldia de Medellin", departamento: "Antioquia", municipio: "Medellin", fecha_inicio: "2020-01-01", fecha_fin: "2023-12-31", partido_id: null, nivel: "municipal", fuente: "SIGEP" },
 ];
 
 // ============================================================
@@ -251,20 +184,13 @@ const declaraciones: DeclaracionPatrimonio[] = [
   { id: "pd04", persona_id: "pres03", anio: 2025, patrimonio_total: 1_600_000_000, ingresos_total: 420_000_000, bienes_inmuebles_valor: 950_000_000, vehiculos_valor: 150_000_000, cuentas_bancarias_saldo: 500_000_000, conflictos_interes: [], fuente: "Ley 2013" },
   { id: "pd05", persona_id: "pres04", anio: 2020, patrimonio_total: 2_800_000_000, ingresos_total: 380_000_000, bienes_inmuebles_valor: 1_900_000_000, vehiculos_valor: 250_000_000, cuentas_bancarias_saldo: 650_000_000, conflictos_interes: [], fuente: "Ley 2013" },
   { id: "pd06", persona_id: "pres04", anio: 2025, patrimonio_total: 3_400_000_000, ingresos_total: 450_000_000, bienes_inmuebles_valor: 2_200_000_000, vehiculos_valor: 300_000_000, cuentas_bancarias_saldo: 900_000_000, conflictos_interes: [], fuente: "Ley 2013" },
-  { id: "pd07", persona_id: "pres06", anio: 2020, patrimonio_total: 1_800_000_000, ingresos_total: 300_000_000, bienes_inmuebles_valor: 1_100_000_000, vehiculos_valor: 200_000_000, cuentas_bancarias_saldo: 500_000_000, conflictos_interes: [], fuente: "Ley 2013" },
-  { id: "pd08", persona_id: "pres06", anio: 2025, patrimonio_total: 2_200_000_000, ingresos_total: 380_000_000, bienes_inmuebles_valor: 1_400_000_000, vehiculos_valor: 220_000_000, cuentas_bancarias_saldo: 580_000_000, conflictos_interes: [], fuente: "Ley 2013" },
-  { id: "pd09", persona_id: "pres07", anio: 2018, patrimonio_total: 3_500_000_000, ingresos_total: 500_000_000, bienes_inmuebles_valor: 2_100_000_000, vehiculos_valor: 400_000_000, cuentas_bancarias_saldo: 1_000_000_000, conflictos_interes: ["Acciones en clinica que contrata con EPS"], fuente: "Ley 2013" },
-  { id: "pd10", persona_id: "pres07", anio: 2025, patrimonio_total: 5_200_000_000, ingresos_total: 700_000_000, bienes_inmuebles_valor: 3_200_000_000, vehiculos_valor: 500_000_000, cuentas_bancarias_saldo: 1_500_000_000, conflictos_interes: ["Acciones en clinica que contrata con EPS"], fuente: "Ley 2013" },
 ];
 
 // ============================================================
 // Antecedentes
 // ============================================================
 
-const antecedentes: Antecedente[] = [
-  { id: "pa01", persona_id: "pres07", tipo: "disciplinario", estado: "archivado", descripcion: "Investigacion por presunta participacion en tramite irregular del acuerdo de paz en el Congreso", entidad_reporta: "Procuraduria General", fecha_sancion: "2018-05-10", fecha_vencimiento: "2019-12-01", fuente: "SIRI" },
-  { id: "pa02", persona_id: "pres08", tipo: "disciplinario", estado: "vigente", descripcion: "Suspension por participacion indebida en politica durante alcaldia de Medellin 2022", entidad_reporta: "Procuraduria General", fecha_sancion: "2022-08-15", fecha_vencimiento: null, fuente: "SIRI" },
-];
+const antecedentes: Antecedente[] = [];
 
 // ============================================================
 // Vinculos familiares
@@ -288,8 +214,6 @@ const financiacion: FinanciacionCampana[] = [
   { id: "pf05", candidatura_id: "pcand03", tipo: "ingreso", concepto: "Aporte del partido", valor: 400_000_000, aportante_nombre: "Dignidad y Compromiso", aportante_tipo: "estatal", fuente: "Cuentas Claras" },
   { id: "pf06", candidatura_id: "pcand04", tipo: "ingreso", concepto: "Aporte Centro Democratico", valor: 1_800_000_000, aportante_nombre: "Centro Democratico", aportante_tipo: "estatal", fuente: "Cuentas Claras" },
   { id: "pf07", candidatura_id: "pcand04", tipo: "ingreso", concepto: "Recursos propios", valor: 500_000_000, aportante_nombre: "Paloma Valencia Laserna", aportante_tipo: "propio", fuente: "Cuentas Claras" },
-  { id: "pf08", candidatura_id: "pcand06", tipo: "ingreso", concepto: "Aporte Alianza Verde", valor: 1_200_000_000, aportante_nombre: "Alianza Verde", aportante_tipo: "estatal", fuente: "Cuentas Claras" },
-  { id: "pf09", candidatura_id: "pcand06", tipo: "ingreso", concepto: "Crowdfunding", valor: 600_000_000, aportante_nombre: "Donaciones ciudadanas", aportante_tipo: "particular", fuente: "Cuentas Claras" },
 ];
 
 // ============================================================
@@ -310,42 +234,6 @@ const alertas: Alerta[] = [
     verificada: true,
   },
   {
-    id: "pal02",
-    persona_id: "pres07",
-    contrato_id: null,
-    tipo: "cambio_partido",
-    severidad: "media",
-    titulo: "Ha cambiado de partido politico 3 veces",
-    descripcion: "Roy Barreras ha pasado por el Partido de la U, Pacto Historico y ahora La Fuerza. Patron de oportunismo politico.",
-    datos_soporte: { partidos: ["Partido de la U", "Pacto Historico", "La Fuerza"] },
-    detectada_at: "2025-08-01",
-    verificada: true,
-  },
-  {
-    id: "pal03",
-    persona_id: "pres07",
-    contrato_id: null,
-    tipo: "enriquecimiento",
-    severidad: "media",
-    titulo: "Crecimiento patrimonial del 48.6% en 7 anos",
-    descripcion: "El patrimonio de Roy Barreras paso de $3.500M en 2018 a $5.200M en 2025, con conflictos de interes declarados por acciones en clinica contratista de EPS.",
-    datos_soporte: { patrimonio_2018: 3_500_000_000, patrimonio_2025: 5_200_000_000, crecimiento_pct: 48.6 },
-    detectada_at: "2025-12-01",
-    verificada: true,
-  },
-  {
-    id: "pal04",
-    persona_id: "pres08",
-    contrato_id: null,
-    tipo: "no_reporte",
-    severidad: "alta",
-    titulo: "No ha reportado financiacion de campana 2026",
-    descripcion: "Daniel Quintero no ha presentado reporte de ingresos ni gastos en Cuentas Claras (CNE). Tiene antecedente disciplinario vigente.",
-    datos_soporte: { fecha_corte: "2026-03-03" },
-    detectada_at: "2026-03-03",
-    verificada: true,
-  },
-  {
     id: "pal05",
     persona_id: "pres02",
     contrato_id: null,
@@ -353,18 +241,6 @@ const alertas: Alerta[] = [
     severidad: "alta",
     titulo: "No ha reportado financiacion de campana 2026",
     descripcion: "Abelardo de la Espriella no ha presentado reporte de ingresos ni gastos en Cuentas Claras (CNE).",
-    datos_soporte: { fecha_corte: "2026-03-03" },
-    detectada_at: "2026-03-03",
-    verificada: true,
-  },
-  {
-    id: "pal06",
-    persona_id: "pres05",
-    contrato_id: null,
-    tipo: "no_reporte",
-    severidad: "media",
-    titulo: "No ha reportado financiacion de campana 2026",
-    descripcion: "Vicky Davila no ha presentado reporte de ingresos ni gastos en Cuentas Claras (CNE). Primera candidatura politica.",
     datos_soporte: { fecha_corte: "2026-03-03" },
     detectada_at: "2026-03-03",
     verificada: true,

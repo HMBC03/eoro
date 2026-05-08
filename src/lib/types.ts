@@ -355,7 +355,7 @@ export interface CandidatoCompleto {
 export interface EntidadPresupuestal {
   id: string;
   nombre: string;
-  tipo: "ministerio" | "departamento_admin" | "corporacion" | "corte" | "organo_control" | "otro";
+  tipo: string;
   rama_id: string;
   presupuesto_asignado: number;
   ejecutado: number;
@@ -370,6 +370,60 @@ export interface RamaGobierno {
   presupuesto_total: number;
   porcentaje_pgn: number;
   entidades: EntidadPresupuestal[];
+}
+
+// --- Entidades del Estado (Gobierno Unificado) ---
+
+export type EntidadCategoria = 
+  | "recaudo" 
+  | "presupuesto" 
+  | "contratacion" 
+  | "control" 
+  | "activos" 
+  | "datos";
+
+export interface EntidadEstado {
+  id: string;
+  nombre: string;
+  sigla: string | null;
+  categoria: EntidadCategoria;
+  subcategoria: string | null;
+  entidad_padre_id: string | null;
+  nit: string | null;
+  sitio_web: string | null;
+  presupuesto_asignado: number | null;
+  presupuesto_ejecutado: number | null;
+  porcentaje_ejecucion: number | null;
+  num_contratos: number;
+  valor_contratos: number;
+  num_funcionarios: number;
+  color_hex: string;
+  orden: number;
+  activo: boolean;
+  fuente: string | null;
+  url_datos: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Re-export for gobierno
+export interface FuncionarioGobierno {
+  id: string;
+  cargo: string;
+  entidad: string;
+  rama: string;
+  fecha_inicio: string | null;
+  persona: {
+    id: string;
+    nombre_completo: string;
+    departamento_origen: string;
+    foto_url: string | null;
+  };
+  partido: {
+    id: string;
+    nombre: string;
+    color_hex: string;
+  } | null;
 }
 
 // --- Funcionario Profile (aggregated view) ---
@@ -444,4 +498,41 @@ export interface DynastyEdge {
 export interface DynastyData {
   nodes: DynastyNode[];
   edges: DynastyEdge[];
+}
+
+// --- Senadores (API Senado) ---
+
+export interface SenadorAPI {
+  id: number;
+  name: string;
+  party_name: string;
+  facebook: string;
+  twitter: string;
+  phone: string;
+  email: string;
+  web: string;
+  image: string;
+  commission_id: string;
+  followers: string;
+}
+
+export interface AsistenciaAPI {
+  plenary_id: string;
+  plenary_created_at: string;
+  senator_id: string;
+  senator: string;
+  attended: string;
+}
+
+export interface Senador extends SenadorAPI {
+  totalAsistencias?: number;
+  totalSesiones?: number;
+  porcentajeAsistencia?: number;
+  comisionNombre?: string;
+}
+
+export interface ComisionAPI {
+  id: number;
+  name: string;
+  description: string;
 }

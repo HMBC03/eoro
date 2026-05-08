@@ -20,7 +20,7 @@ interface PartidoResult {
 interface EntidadResult {
   id: string;
   nombre: string;
-  tipo: string;
+  categoria: string;
 }
 
 interface ContratoResult {
@@ -68,8 +68,8 @@ export default async function BuscarPage({ searchParams }: SearchPageProps) {
         .limit(10),
       supabase
         .schema("eoro")
-        .from("entidades_presupuestales")
-        .select("id, nombre, tipo")
+        .from("entidad_estado")
+        .select("id, nombre, categoria")
         .ilike("nombre", pattern)
         .limit(10),
       supabase

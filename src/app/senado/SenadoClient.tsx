@@ -320,18 +320,22 @@ export default function SenadoClient({
                     >
                       Asistencias {campoOrden === "totalAsistencias" && (ordenDir === "asc" ? "↑" : "↓")}
                     </th>
-                    <th
+<th
                       className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100"
                       onClick={() => handleOrdenar("porcentajeAsistencia")}
                     >
                       % Asistencia {campoOrden === "porcentajeAsistencia" && (ordenDir === "asc" ? "↑" : "↓")}
                     </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Estado
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {filteredSenadores.map((senador) => {
-                    const pct = senador.porcentajeAsistencia ?? 0;
+                    const pct = senador.porcentajeDesdeIngreso ?? senador.porcentajeAsistencia ?? 0;
                     const colors = getPorcentajeColor(pct);
+                    const tieneAlertas = senador.alertas && senador.alertas?.length > 0;
                     
                     return (
                       <tr key={senador.id} className="hover:bg-gray-50">
@@ -339,6 +343,11 @@ export default function SenadoClient({
                           <a href={`/senado/${senador.id}`} className="hover:text-blue-600 hover:underline">
                             {senador.name}
                           </a>
+                          {senador.inicioTardio && (
+                            <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 text-xs">
+                              Tardío
+                            </span>
+                          )}
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-600">
                           {senador.party_name}
@@ -347,12 +356,21 @@ export default function SenadoClient({
                           {senador.comisionNombre || "Sin comisión"}
                         </td>
                         <td className="px-4 py-3 text-sm text-center">
-                          {senador.totalAsistencias ?? 0} / {senador.totalSesiones ?? 0}
+                          {senador.totalAsistencias ?? 0} / {senador.sesionesDesdeIngreso ?? senador.totalSesiones ?? 0}
                         </td>
                         <td className="px-4 py-3 text-center">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
-                            {pct}%
+                            {senador.porcentajeDesdeIngreso ?? pct}%
                           </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          {tieneAlertas ? (
+                            <span className="inline-flex items-center px-2 py-1 rounded bg-amber-100 text-amber-700 text-xs font-medium">
+                              Alerta
+                            </span>
+                          ) : (
+                            <span className="text-xs text-gray-400">—</span>
+                          )}
                         </td>
                       </tr>
                     );

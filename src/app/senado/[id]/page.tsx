@@ -1,6 +1,7 @@
-import { fetchSenadores, fetchAsistencias, fetchComisiones, unificarSenadoresConAsistencias, relacionarSenadoresConComisiones } from "@/lib/data/senadores";
+import { fetchSenadores, fetchAsistencias, fetchComisiones, fetchVotaciones, unificarSenadoresConAsistencias, relacionarSenadoresConComisiones, unificarSenadoresConVotaciones, analizarSesionesDetalle } from "@/lib/data/senadores";
 import { Senador } from "@/lib/types";
 import { notFound } from "next/navigation";
+import SesionesModal from "./SesionesModal";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -8,28 +9,45 @@ interface PageProps {
 
 export default async function SenadoDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const senadorId = parseInt(id, 10);
+  const senatorId = parseInt(id, 10);
   
-  const [senadoresRaw, asimtas, comisiones] = await Promise.all([
+  const [senadoresRaw, asimtas, comisiones, votaciones] = await Promise.all([
     fetchSenadores(),
     fetchAsistencias("2022-07-20", "2026-07-19"),
     fetchComisiones(),
+    fetchVotaciones("2022-07-20", "2026-07-19"),
   ]);
 
-  const senadorsConAsistencias = unificarSenadoresConAsistencias(senadoresRaw, asimtas);
-  const Senado = relacionarSenadoresConComisiones(senadorsConAsistencias, comisiones);
+  const senatorsConAsistencias = unificarSenadoresConAsistencias(senadoresRaw, asimtas);
+  const senatorsConComisiones = relacionarSenadoresConComisiones(senatorsConAsistencias, comisiones);
+  const senatorsConVotaciones = unificarSenadoresConVotaciones(senatorsConComisiones, votaciones, asimtas);
+  const Senate = analizarSesionesDetalle(senatorsConVotaciones, votaciones, asimtas);
   
-  const senador = Senado.find((s) => s.id === senadorId);
+  const miembro = Senate.find((s) => s.id === senatorId);
   
-  if (!senador) {
+  if (!miembro) {
     notFound();
   }
 
-  const comision = comisiones.find((c) => c.id.toString() === senador.commission_id);
-  const asistenciaPct = senador.porcentajeAsistencia ?? 0;
-  const asists = senador.totalAsistencias ?? 0;
-  const total = senador.totalSesiones ?? 0;
+  const comision = comisiones.find((c) => c.id.toString() === miembro.commission_id);
+  const asistenciaPct = miembro.porcentajeAsistencia ?? 0;
+  const asists = miembro.totalAsistencias ?? 0;
+  const total = miembro.totalSesiones ?? 0;
   const inasistencias = total - asists;
+
+  const asistenciaDesdeIngresoPct = miembro.porcentajeDesdeIngreso ?? 0;
+  const sesionesDesdeIngreso = miembro.sesionesDesdeIngreso ?? 0;
+  const sesionesTotalesPeriodo = miembro.sesionesTotalesPeriodo ?? total;
+
+  const votosSi = miembro.votosSi ?? 0;
+  const votosNo = miembro.votosNo ?? 0;
+  const abst = miembro.abstenciones ?? 0;
+  const totalVotos = miembro.totalVotaciones ?? 0;
+  const participacionVot = miembro.participacionVotaciones ?? 0;
+
+  const sesionesDetalle = miembro.sesionesDetalle ?? [];
+  const tieneInasistencias = sesionesDetalle.some(s => s.estado === "no_asistio");
+  const tieneAlertas = miembro.alertas && miembro.alertas.length > 0;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -47,10 +65,10 @@ export default async function SenadoDetailPage({ params }: PageProps) {
         
         {/* 40% Izquierda - Foto y datos básicos */}
         <div className="w-2/5 p-6 bg-gray-50 flex flex-col items-center text-center">
-          {senador.image ? (
+          {miembro.image ? (
             <img 
-              src={senador.image} 
-              alt={senador.name}
+              src={miembro.image} 
+              alt={miembro.name}
               className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-white shadow"
             />
           ) : (
@@ -58,11 +76,21 @@ export default async function SenadoDetailPage({ params }: PageProps) {
               <span className="text-4xl text-gray-500">👤</span>
             </div>
           )}
-          <h1 className="text-xl font-bold text-gray-900">{senador.name}</h1>
-          <p className="text-sm text-gray-500 mt-1">{senador.party_name}</p>
-          {senador.comisionNombre && (
+          <h1 className="text-xl font-bold text-gray-900">{miembro.name}</h1>
+          <p className="text-sm text-gray-500 mt-1">{miembro.party_name}</p>
+          {miembro.fechaInicio && (
+            <p className="text-xs text-gray-400 mt-2">
+              Senador desde: {new Date(miembro.fechaInicio).toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" })}
+            </p>
+          )}
+          {miembro.comisionNombre && (
             <span className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-xs text-blue-700">
-              {senador.comisionNombre}
+              {miembro.comisionNombre}
+            </span>
+          )}
+          {miembro.seRetiro && (
+            <span className="mt-2 inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-xs text-orange-700">
+              ⚠️ Se ha retirado en algunas sesiones
             </span>
           )}
         </div>
@@ -73,31 +101,31 @@ export default async function SenadoDetailPage({ params }: PageProps) {
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Contacto</h3>
             <div className="space-y-2 text-sm">
-              {senador.email && (
+              {miembro.email && (
                 <p className="text-gray-600">
-                  <span className="font-medium">Email:</span> {senador.email}
+                  <span className="font-medium">Email:</span> {miembro.email}
                 </p>
               )}
-              {senador.phone && (
+              {miembro.phone && (
                 <p className="text-gray-600">
-                  <span className="font-medium">Teléfono:</span> {senador.phone}
+                  <span className="font-medium">Teléfono:</span> {miembro.phone}
                 </p>
               )}
-              {senador.web && (
+              {miembro.web && (
                 <p className="text-gray-600">
                   <span className="font-medium">Web:</span>{" "}
-                  <a href={senador.web} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                    {senador.web.replace(/^https?:\/\//, "")}
+                  <a href={miembro.web} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {miembro.web.replace(/^https?:\/\//, "")}
                   </a>
                 </p>
               )}
-              {(senador.twitter || senador.facebook) && (
+              {(miembro.twitter || miembro.facebook) && (
                 <div className="flex gap-3 mt-2">
-                  {senador.twitter && (
-                    <span className="text-gray-400 text-xs">🐦 @{senador.twitter}</span>
+                  {miembro.twitter && (
+                    <span className="text-gray-400 text-xs">🐦 @{miembro.twitter}</span>
                   )}
-                  {senador.facebook && (
-                    <span className="text-gray-400 text-xs">📘 {senador.facebook}</span>
+                  {miembro.facebook && (
+                    <span className="text-gray-400 text-xs">📘 {miembro.facebook}</span>
                   )}
                 </div>
               )}
@@ -116,41 +144,189 @@ export default async function SenadoDetailPage({ params }: PageProps) {
           )}
 
           {/* Asistencia */}
+          <div className="mb-8 space-y-6">
+            {/* Gráfico 1: Período Legislativo */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Asistencia - Período Legislativo 2022-2026</h3>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex-1 h-6 rounded-full overflow-hidden flex">
+                  <div 
+                    className="h-full bg-green-500"
+                    style={{ width: `${asistenciaPct}%` }}
+                  />
+                  <div 
+                    className="h-full bg-red-400"
+                    style={{ width: `${100 - asistenciaPct}%` }}
+                  />
+                </div>
+                <span className="text-sm font-bold text-gray-700">{asistenciaPct}%</span>
+              </div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="p-2 rounded-lg bg-green-50">
+                  <p className="text-xl font-bold text-green-600">{asists}</p>
+                  <p className="text-xs text-green-600">Asistencias</p>
+                </div>
+                <div className="p-2 rounded-lg bg-red-50">
+                  <p className="text-xl font-bold text-red-500">{inasistencias}</p>
+                  <p className="text-xs text-red-500">Inasistencias</p>
+                </div>
+                <div className="p-2 rounded-lg bg-gray-50">
+                  <p className="text-xl font-bold text-gray-600">{sesionesTotalesPeriodo}</p>
+                  <p className="text-xs text-gray-500">Total Sesiones</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gráfico 2: Desde su primer asistencia */}
+            <div className="pt-4 border-t border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                Asistencia - Desde su primer asistencia 
+                <span className="font-normal text-gray-500">
+                  ({miembro.fechaInicio ? new Date(miembro.fechaInicio).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" }) : "N/A"})
+                </span>
+              </h3>
+              {miembro.inicioTardio ? (
+                <div className="mb-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-medium">
+                      Dato atípico
+                    </span>
+                  </div>
+                  <p className="text-xs text-purple-700">
+                    El senador asumió el cargo {Math.floor((new Date(miembro.fechaInicio || "2022-07-20").getTime() - new Date("2022-07-20").getTime()) / (365.25 * 24 * 60 * 60 * 1000))} años después del inicio del período legislativo
+                  </p>
+                </div>
+              ) : null}
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex-1 h-6 rounded-full overflow-hidden flex">
+                  <div 
+                    className="h-full bg-green-500"
+                    style={{ width: `${asistenciaDesdeIngresoPct}%` }}
+                  />
+                  <div className="h-full bg-red-400" style={{ width: `${100 - asistenciaDesdeIngresoPct}%` }} />
+                </div>
+                <span className="text-sm font-bold text-gray-700">{asistenciaDesdeIngresoPct}%</span>
+              </div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="p-2 rounded-lg bg-green-50">
+                  <p className="text-xl font-bold text-green-600">{asists}</p>
+                  <p className="text-xs text-green-600">Asistencias</p>
+                </div>
+                <div className="p-2 rounded-lg bg-red-50">
+                  <p className="text-xl font-bold text-red-500">{sesionesDesdeIngreso - asists}</p>
+                  <p className="text-xs text-red-500">Inasistencias</p>
+                </div>
+                <div className="p-2 rounded-lg bg-gray-50">
+                  <p className="text-xl font-bold text-gray-600">{sesionesDesdeIngreso}</p>
+                  <p className="text-xs text-gray-500">Sesiones desde ingreso</p>
+                </div>
+              </div>
+            </div>
+            {tieneAlertas && (
+              <div className="mt-3 p-2 bg-amber-100 text-amber-700 text-xs rounded">
+                Alerta: 5+ sesiones consecutivas sin asistir
+              </div>
+            )}
+          </div>
+
+          {/* Votaciones */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">Asistencia (Período 2022-2026)</h3>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Votaciones (Período 2022-2026)</h3>
             
-            {/* Diagrama de asistencia */}
+            {/* Gráfico de votaciones */}
             <div className="flex items-center gap-4 mb-4">
               <div className="flex-1 h-6 rounded-full overflow-hidden flex">
                 <div 
                   className="h-full bg-green-500"
-                  style={{ width: `${asistenciaPct}%` }}
+                  style={{ width: totalVotos > 0 ? `${(votosSi / totalVotos) * 100}%` : "0%" }}
                 />
                 <div 
-                  className="h-full bg-red-400"
-                  style={{ width: `${100 - asistenciaPct}%` }}
+                  className="h-full bg-red-500"
+                  style={{ width: totalVotos > 0 ? `${(votosNo / totalVotos) * 100}%` : "0%" }}
+                />
+                <div 
+                  className="h-full bg-gray-400"
+                  style={{ width: totalVotos > 0 ? `${(abst / totalVotos) * 100}%` : "0%" }}
                 />
               </div>
-              <span className="text-sm font-bold text-gray-700">{asistenciaPct}%</span>
+              <span className="text-sm font-bold text-gray-700">{participacionVot}%</span>
             </div>
 
-            {/* Números */}
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div className="p-3 rounded-lg bg-green-50">
-                <p className="text-2xl font-bold text-green-600">{asists}</p>
-                <p className="text-xs text-green-600">Asistencias</p>
+            {/* Leyenda y números */}
+            <div className="grid grid-cols-4 gap-3 text-center">
+              <div className="p-2 rounded-lg bg-green-50">
+                <p className="text-xl font-bold text-green-600">{votosSi}</p>
+                <p className="text-xs text-green-600">Votos Si</p>
               </div>
-              <div className="p-3 rounded-lg bg-red-50">
-                <p className="text-2xl font-bold text-red-500">{inasistencias}</p>
-                <p className="text-xs text-red-500">Inasistencias</p>
+              <div className="p-2 rounded-lg bg-red-50">
+                <p className="text-xl font-bold text-red-500">{votosNo}</p>
+                <p className="text-xs text-red-500">Votos No</p>
               </div>
-              <div className="p-3 rounded-lg bg-gray-50">
-                <p className="text-2xl font-bold text-gray-600">{total}</p>
-                <p className="text-xs text-gray-500">Sesiones</p>
+              <div className="p-2 rounded-lg bg-gray-50">
+                <p className="text-xl font-bold text-gray-500">{abst}</p>
+                <p className="text-xs text-gray-500">Abstenciones</p>
+              </div>
+              <div className="p-2 rounded-lg bg-blue-50">
+                <p className="text-xl font-bold text-blue-600">{totalVotos}</p>
+                <p className="text-xs text-blue-600">Total Votaciones</p>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Card de Detalle de Sesiones */}
+        {sesionesDetalle.length > 0 && (
+          <div className="rounded-lg border border-gray-200 overflow-hidden">
+            <h3 className="bg-gray-100 px-4 py-2 font-semibold text-sm">
+              Detalle de Sesiones ({sesionesDetalle.length} total)
+            </h3>
+            
+            {/* Banner informativo si hay inasistencias */}
+            {tieneInasistencias && (
+              <div className="bg-green-50 px-4 py-2 text-xs text-green-700 border-b">
+                Nota: El senador pudo presentar una excusa válida pero el sistema no nos permite saber dicha información.
+              </div>
+            )}
+            
+            {/* Tabla de sesiones (máx 5) */}
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">Fecha</th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">Estado</th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">Voto</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sesionesDetalle.slice(0, 5).map((sesion) => (
+                  <tr key={sesion.plenary_id} className="border-t">
+                    <td className="px-4 py-2 text-gray-700">
+                      {new Date(sesion.fecha).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })}
+                    </td>
+                    <td className="px-4 py-2">
+                      <span className={
+                        sesion.estado === "asistio_voto" ? "text-green-600 font-medium" :
+                        sesion.estado === "asistio_sin_voto" ? "text-yellow-600 font-medium" : 
+                        "text-red-600 font-medium"
+                      }>
+                        {sesion.estado === "asistio_voto" ? "Asistió y votó" : 
+                         sesion.estado === "asistio_sin_voto" ? "Asistió sin votar" : "No asistió"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 text-gray-600">
+                      {sesion.voto ? sesion.voto.toUpperCase() : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            {/* Botón Ver más */}
+            {sesionesDetalle.length > 5 && (
+              <SesionesModal sesiones={sesionesDetalle} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

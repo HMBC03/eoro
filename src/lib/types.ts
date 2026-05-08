@@ -524,15 +524,47 @@ export interface AsistenciaAPI {
   attended: string;
 }
 
+export interface ComisionAPI {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface VotacionAPI {
+  plenary_id: string;
+  created_at: string;
+  senator_id: string;
+  senator_name: string;
+  project_id: number;
+  project_name: string;
+  vote: string;
+}
+
+export interface SesionDetalle {
+  fecha: string;
+  plenary_id: string;
+  estado: "asistio_voto" | "asistio_sin_voto" | "no_asistio";
+  voto?: "si" | "no" | "abst" | null;
+}
+
 export interface Senador extends SenadorAPI {
   totalAsistencias?: number;
   totalSesiones?: number;
   porcentajeAsistencia?: number;
   comisionNombre?: string;
-}
-
-export interface ComisionAPI {
-  id: number;
-  name: string;
-  description: string;
+  fechaInicio?: string | null;
+  totalVotaciones?: number;
+  totalSesionesDondeVoto?: number;
+  votosSi?: number;
+  votosNo?: number;
+  abstenciones?: number;
+  participacionVotaciones?: number;
+  seRetiro?: boolean;
+  sesionesTotalesPeriodo?: number;
+  sesionesDesdeIngreso?: number;
+  porcentajeDesdeIngreso?: number;
+  sesionesDetalle?: SesionDetalle[];
+  alertas?: string[];
+  inicioTardio?: boolean;
+  mensajeInicioTardio?: string;
 }

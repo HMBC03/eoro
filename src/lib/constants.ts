@@ -19,6 +19,7 @@ export const SECOP_ENDPOINTS = {
 export const SENADO_API_URL = "https://app.senado.gov.co/backend/api/public/v1/senators?format=json";
 export const SENADO_ASISTENCIAS_URL = "https://app.senado.gov.co/backend/api/public/v1/assistances";
 export const SENADO_COMISIONES_URL = "https://app.senado.gov.co/backend/api/public/v1/commissions?format=json";
+export const SENADO_VOTACIONES_URL = "https://app.senado.gov.co/backend/api/public/v1/votes";
 
 // --- Other data source URLs ---
 export const DATA_SOURCES = {

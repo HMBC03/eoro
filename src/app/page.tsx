@@ -112,9 +112,9 @@ export default function Home() {
         <div className="relative z-10 px-6 pt-28 pb-28 md:pt-36 md:pb-36">
           <div className="mx-auto max-w-[1400px]">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/90 px-4 py-1.5 text-sm font-semibold text-white mb-6">
+<span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/90 px-4 py-1.5 text-sm font-semibold text-white mb-6">
                 <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                Monitoreamos recursos públicos conforme lo reportado
+                {diasParaElecciones > 0 ? `Faltan ${diasParaElecciones} días para las elecciones` : "Elecciones en curso"}
               </span>
               <h1 className="text-4xl font-light text-white leading-tight md:text-6xl lg:text-7xl">
                 Centro de monitoreo de
@@ -169,6 +169,9 @@ export default function Home() {
             <h2 className="text-2xl font-light text-gray-900">
               Recursos públicos por <span className="font-bold">entidad</span>
             </h2>
+            <p className="mt-2 text-sm text-gray-500 italic">
+              "Seguimos el desempeño de funcionarios electos — el núcleo de la veeduría ciudadana"
+            </p>
             <p className="mt-1 text-sm text-gray-400">
               Monitoreamos 6 categorías de recursos conforme las entidades los reportan.
             </p>

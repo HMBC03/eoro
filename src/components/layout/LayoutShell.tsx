@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { NavigationLoader } from "./NavigationLoader";
 
 export interface NavItem {
   readonly label: string;
@@ -25,6 +26,7 @@ export function LayoutShell({ children, navItems }: LayoutShellProps) {
 
   return (
     <>
+      <NavigationLoader />
       <Header navItems={navItems} />
       <main className="min-h-screen">{children}</main>
       {/* Disclaimer banner — fixed bottom */}

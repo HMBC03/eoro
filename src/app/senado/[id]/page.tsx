@@ -233,6 +233,12 @@ export default async function SenadoDetailPage({ params }: PageProps) {
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Votaciones (Período 2022-2026)</h3>
             
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg">
+              <p className="text-xs text-amber-800">
+                <span className="font-medium">⚠ Advertencia:</span> El API oficial del Senado retorna datos de prueba mezclados con datos reales. Los porcentajes de votacion pueden no reflejar fielmente la actividad legislativa real. <a href="/senado" className="underline">Ver mas</a>
+              </p>
+            </div>
+            
             {/* Gráfico de votaciones */}
             <div className="flex items-center gap-4 mb-4">
               <div className="flex-1 h-6 rounded-full overflow-hidden flex">

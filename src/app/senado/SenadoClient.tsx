@@ -236,10 +236,16 @@ export default function SenadoClient({
 
       {activeTab === "senadores" && (
         <>
-          <div className="mb-6">
+           <div className="mb-6">
             <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-700">
                 Período SENADO 2022-2026 (20 jul 2022 - 19 jul 2026). Total sesiones: {senadores[0]?.totalSesiones ?? 0}
+              </p>
+            </div>
+            <div className="mt-3 p-3 bg-amber-50 border border-amber-300 rounded-lg">
+              <p className="text-sm text-amber-800 font-medium">⚠ Advertencia sobre datos de votaciones</p>
+              <p className="text-xs text-amber-700 mt-1">
+                El API oficial del Senado esta retornando datos de prueba mezclados con datos reales (ej: votos con project_name &quot;Prueba voto X&quot; y fechas de 2026). Los porcentajes de votacion mostrados podrian no reflejar fielmente la actividad legislativa real.
               </p>
             </div>
           </div>

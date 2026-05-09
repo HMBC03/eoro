@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { Senador } from "@/lib/types";
 import { filterSenadores, fetchSenadores, fetchAsistencias, unificarSenadoresConAsistencias } from "@/lib/data/senadores";
+import { GlobalLoading } from "@/components/ui/GlobalLoading";
 
 interface SenadoresClientProps {
   initialSenadores: Senador[];
@@ -88,7 +89,9 @@ export default function SenadoresClient({
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="relative">
+      <GlobalLoading visible={isLoading} />
+      <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4">Senadores de la República</h1>
         <p className="text-gray-600">
@@ -220,6 +223,7 @@ export default function SenadoresClient({
           Mostrando {filteredSenadores.length} de {senadores.length} senadores
         </div>
       </div>
+    </div>
     </div>
   );
 }

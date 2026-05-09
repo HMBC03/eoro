@@ -109,7 +109,7 @@ export default function SenadoClient({
 
   return (
     <div className="relative">
-      {isLoading && <GlobalLoading />}
+      <GlobalLoading visible={isLoading} />
       <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4">Senado de la República</h1>

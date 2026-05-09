@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { GlobalLoading } from "@/components/ui/GlobalLoading";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -54,7 +55,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="relative">
+      <GlobalLoading visible={loading} />
+      <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -118,6 +121,7 @@ export default function AdminLoginPage() {
           Solo administradores autorizados
         </p>
       </div>
+    </div>
     </div>
   );
 }

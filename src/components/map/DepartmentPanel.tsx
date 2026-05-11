@@ -20,7 +20,7 @@ const tipoLabels: Record<string, string> = {
 export function DepartmentPanel({ stats, candidates, onClose }: DepartmentPanelProps) {
   if (!stats) {
     return (
-      <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-8 text-center h-full flex flex-col items-center justify-center min-h-[300px]">
+      <div className="rounded-none bg-white border border-black shadow-[5px_5px_0px_0px_#000] p-8 text-center h-full flex flex-col items-center justify-center min-h-[300px]">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100">
           <svg className="h-7 w-7 text-gray-400" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -41,7 +41,7 @@ export function DepartmentPanel({ stats, candidates, onClose }: DepartmentPanelP
   const remaining = candidates.length - displayCandidates.length;
 
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden">
+    <div className="rounded-none bg-white border border-black shadow-[5px_5px_0px_0px_#000] overflow-hidden">
       {/* Header */}
       <div className="bg-gray-900 px-5 py-4 text-white">
         <div className="flex items-start justify-between">
@@ -171,11 +171,11 @@ function StatCard({
   text: string;
 }) {
   return (
-    <div className={`rounded-xl ${bg} p-3 text-center`}>
-      <p className={`text-xl font-bold ${text}`}>
+    <div className="rounded-none bg-white border border-black p-3 text-center shadow-[3px_3px_0px_0px_#000]">
+      <p className="text-xl font-bold text-black">
         {value.toLocaleString("es-CO")}
       </p>
-      <p className="text-[10px] font-medium text-gray-500 mt-0.5">{label}</p>
+      <p className="text-[10px] font-medium text-black mt-0.5">{label}</p>
       {detail && (
         <p className="text-[9px] text-gray-400 mt-0.5">{detail}</p>
       )}

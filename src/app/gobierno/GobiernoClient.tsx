@@ -49,12 +49,20 @@ const TABS: { value: Tab; label: string; icon: React.ReactNode }[] = [
 ];
 
 const CATEGORIAS = [
-  { key: "recaudo", label: "Recaudo e Ingresos", color: "#10B981", emoji: "💰" },
-  { key: "presupuesto", label: "Presupuesto y Ejecución", color: "#3B82F6", emoji: "📊" },
-  { key: "contratacion", label: "Contratación Pública", color: "#8B5CF6", emoji: "🏛" },
-  { key: "control", label: "Órganos de Control", color: "#EF4444", emoji: "🔎" },
-  { key: "activos", label: "Gestión de Activos", color: "#F59E0B", emoji: "📦" },
-  { key: "datos", label: "Datos Abiertos", color: "#06B6D4", emoji: "📂" },
+  { key: "recaudo", label: "Recaudo e Ingresos", color: "#10B981" },
+  { key: "presupuesto", label: "Presupuesto y Ejecución", color: "#3B82F6" },
+  { key: "contratacion", label: "Contratación Pública", color: "#8B5CF6" },
+  { key: "control", label: "Órganos de Control", color: "#EF4444" },
+  { key: "activos", label: "Gestión de Activos", color: "#F59E0B" },
+  { key: "datos", label: "Datos Abiertos", color: "#06B6D4" },
+];
+
+const RAMAS_ESTADO = [
+  { key: "ramas", label: "Ramas del Poder Público", desc: "Ejecutiva, Legislativa y Judicial. Los tres poderes que conforman el Estado colombiano según la Constitución de 1991." },
+  { key: "autonomos", label: "Órganos Autónomos e Independientes", desc: "Banco de la República, Comisión Nacional del Servicio Civil, Corporaciones Autónomas Regionales, Entes Universitarios Autónomos y Autoridad Nacional de Televisión." },
+  { key: "electoral", label: "Organización Electoral", desc: "Registraduría Nacional del Estado Civil y Consejo Nacional Electoral." },
+  { key: "control", label: "Organismos de Control", desc: "Ministerio Público (Procuraduría General, Defensoría del Pueblo, Personerías) y Control Fiscal (Contraloría General, Auditoría General, Contralorías Territoriales)." },
+  { key: "justicia", label: "Sistema Integral de Verdad, Justicia, Reparación y No Repetición", desc: "Tres mecanismos del Acuerdo de Paz: Jurisdicción Especial para la Paz (JEP), Comisión de la Verdad y Unidad de Búsqueda de Personas Desaparecidas (UBPD)." },
 ];
 
 interface GobiernoClientProps {
@@ -178,64 +186,20 @@ export default function GobiernoClient({
       {/* TAB: MAPA (vista principal) */}
       {activeTab === "mapa" && (
         <div className="mx-auto max-w-[1400px] px-6 pb-12">
-          {CATEGORIAS.map((cat) => (
-            <div key={cat.key} className="mb-10">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-xl">{cat.emoji}</span>
-                <h2 className="text-lg font-semibold" style={{ color: cat.color }}>
-                  {cat.label}
-                </h2>
-                <span className="text-xs text-gray-400">
-                  ({entidadesAgrupadas[cat.key].length} entidades)
-                </span>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {entidadesAgrupadas[cat.key].map((ent) => (
-                  <a
-                    key={ent.id}
-                    href={ent.url_datos || "#"}
-                    target={ent.url_datos ? "_blank" : undefined}
-                    rel={ent.url_datos ? "noopener noreferrer" : undefined}
-                    className="group block rounded-2xl bg-white p-4 border border-gray-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold text-white"
-                        style={{ backgroundColor: ent.color_hex || cat.color }}
-                      >
-                        {ent.sigla?.slice(0, 2) || ent.nombre.slice(0, 2)}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-semibold text-gray-900 truncate group-hover:text-gray-600">
-                          {ent.nombre}
-                        </h3>
-                        {ent.sigla && (
-                          <p className="text-xs text-gray-400">{ent.sigla}</p>
-                        )}
-                        {ent.subcategoria && (
-                          <span className="mt-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-500">
-                            {ent.subcategoria}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {ent.num_contratos > 0 && (
-                      <div className="mt-3 pt-3 border-t border-gray-50">
-                        <p className="text-xs text-gray-400">
-                          {ent.num_contratos} contratos · {formatCOPShort(ent.valor_contratos)}
-                        </p>
-                      </div>
-                    )}
-                  </a>
-                ))}
-              </div>
-              {entidadesAgrupadas[cat.key].length === 0 && (
-                <p className="text-sm text-gray-400 py-4">
-                  No hay entidades en esta categoría
-                </p>
-              )}
+          {/* Estructura del Estado */}
+          <section className="mb-10">
+            <div className="flex flex-col gap-3">
+              {RAMAS_ESTADO.map((rama) => (
+                <div
+                  key={rama.key}
+                  className="rounded-none bg-white p-5 border border-black shadow-[5px_5px_0px_0px_#000]"
+                >
+                  <h3 className="font-bold text-black">{rama.label}</h3>
+                  <p className="mt-1 text-sm text-gray-600">{rama.desc}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </section>
         </div>
       )}
 

@@ -86,11 +86,11 @@ export default function MapaClient({ statsArray, allCandidatos }: MapaClientProp
 
       {/* Main content: map + panel */}
       <div className="mx-auto max-w-[1400px] px-6 pb-12">
-        <div className="flex gap-6 flex-col lg:flex-row">
+        <div className="flex flex-col gap-6">
           {/* Map area */}
-          <div className="flex-1 min-w-0">
+          <div className="w-full">
             <div
-              className="relative rounded-2xl bg-white border border-gray-100 shadow-sm p-4"
+              className="relative rounded-none bg-white border border-black shadow-[5px_5px_0px_0px_#000] p-4"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeaveMap}
             >
@@ -123,8 +123,8 @@ export default function MapaClient({ statsArray, allCandidatos }: MapaClientProp
           </div>
 
           {/* Detail panel */}
-          <div className="w-full lg:w-[380px] lg:shrink-0">
-            <div className="lg:sticky lg:top-20">
+          <div className="w-full">
+            <div>
               <DepartmentPanel
                 stats={selectedStats}
                 candidates={deptCandidates}

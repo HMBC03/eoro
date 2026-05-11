@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -39,9 +40,13 @@ export function Header({ navItems }: HeaderProps) {
         <div className="flex items-center justify-between px-5 py-2.5">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-900">
-              <span className="text-sm font-bold text-[#c4e615]">E</span>
-            </div>
+            <Image
+              src="/Gemini_Generated_Image_ipqgbsipqgbsipqg.png"
+              alt={APP_NAME}
+              width={36}
+              height={36}
+              className="rounded-xl"
+            />
             <span className="text-lg font-bold text-gray-900 tracking-tight">{APP_NAME}</span>
           </Link>
 

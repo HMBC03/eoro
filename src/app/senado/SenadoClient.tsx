@@ -34,6 +34,17 @@ function getComisionColor(index: number): string {
   return colors[index % colors.length];
 }
 
+const SHADOW_HEX: Record<string, string> = {
+  "blue-500": "#3b82f6",
+  "green-500": "#22c55e",
+  "purple-500": "#a855f7",
+  "orange-500": "#f97316",
+  "red-500": "#ef4444",
+  "cyan-500": "#06b6d4",
+  "pink-500": "#ec4899",
+  "amber-500": "#f59e0b",
+};
+
 export default function SenadoClient({
   initialSenadores,
   partidos,
@@ -159,7 +170,7 @@ export default function SenadoClient({
         let ultimoGrupo = "";
         
         return (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {comisiones.map((comision, index) => {
               const senadorsEnComision = initialSenadores.filter(
                 (s) => s.commission_id === comision.id.toString()
@@ -191,11 +202,9 @@ export default function SenadoClient({
                     </div>
                   )}
                   <div
-                    className="rounded-2xl bg-white border border-gray-200 shadow-sm overflow-hidden flex"
+                    className="rounded-none bg-white border border-black overflow-hidden flex"
+                    style={{ boxShadow: `5px 5px 0px 0px ${SHADOW_HEX[colorClass]}` }}
                   >
-                    {/* Borde izquierdo colorido */}
-                    <div className={cn("w-1 flex-shrink-0", `bg-${colorClass}`)} />
-                    
                     {/* 40% Izquierda - Nombre e ID */}
                     <div className="w-2/5 px-5 py-4 bg-gray-50 flex flex-col justify-center">
                       <p className="text-xs text-gray-400 mb-1">Comisión #{comision.id}</p>

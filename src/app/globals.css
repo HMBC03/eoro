@@ -91,3 +91,14 @@ html {
   fill: var(--foreground);
   font-size: 12px;
 }
+
+/* Striped diagonal bars for progress indicators */
+.bar-striped {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(0,0,0,0.15) 4px,
+    rgba(0,0,0,0.15) 8px
+  );
+}

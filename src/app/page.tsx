@@ -147,21 +147,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats row */}
-      <section className="px-6 -mt-12 relative z-20">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="rounded-2xl bg-white p-5 border border-gray-100 shadow-sm">
-                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                <p className="mt-1 text-xs text-gray-400">{stat.label}</p>
-                <div className="mt-3 h-1 w-10 rounded-full bg-emerald-500" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Sections grid */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-[1400px]">
@@ -182,23 +167,15 @@ export default function Home() {
               <Link
                 key={section.href}
                 href={section.href}
-                className="group rounded-2xl bg-white p-5 border border-gray-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                className="group rounded-none bg-white p-5 border border-black transition-all shadow-[5px_5px_0px_0px_#000] hover:shadow-[3px_3px_0px_0px_#000] hover:-translate-y-0.5"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                    {section.icon}
-                  </div>
-                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${section.tagColor}`}>
-                    {section.tag}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gray-900 group-hover:text-gray-600 transition-colors">
+                <h3 className="font-bold text-black text-lg group-hover:text-gray-600 transition-colors">
                   {section.title}
                 </h3>
                 <p className="mt-1.5 text-sm text-gray-400 leading-relaxed">
                   {section.desc}
                 </p>
-                <div className="mt-4 flex items-center text-xs font-medium text-emerald-600 group-hover:text-emerald-700 transition-colors">
+                <div className="mt-4 flex items-center text-xs font-medium text-black transition-colors">
                   Explorar
                   <svg className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -213,20 +190,20 @@ export default function Home() {
       {/* How it works */}
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-[1400px]">
-          <div className="rounded-2xl bg-gray-900 p-8 md:p-12">
-            <h2 className="text-2xl font-light text-white mb-10 text-center">
+          <div className="rounded-none bg-white border border-black p-8 md:p-12 shadow-[5px_5px_0px_0px_#000]">
+            <h2 className="text-2xl font-light text-black mb-10 text-center">
               Cómo <span className="font-bold">funciona</span>
             </h2>
             <div className="grid gap-8 md:grid-cols-3">
               {HOW_IT_WORKS.map((item) => (
                 <div key={item.step} className="text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-lg font-bold text-white">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white border-2 border-black text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000]">
                     {item.step}
                   </div>
-                  <h3 className="mb-2 text-lg font-semibold text-white">
+                  <h3 className="mb-2 text-lg font-bold text-black">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>

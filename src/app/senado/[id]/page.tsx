@@ -3,6 +3,12 @@ import { Senador } from "@/lib/types";
 import { notFound } from "next/navigation";
 import SesionesModal from "./SesionesModal";
 
+const COMMISSION_COLORS = ["blue-500","green-500","purple-500","orange-500","red-500","cyan-500","pink-500","amber-500"];
+const SHADOW_HEX: Record<string, string> = {
+  "blue-500":"#3b82f6","green-500":"#22c55e","purple-500":"#a855f7","orange-500":"#f97316",
+  "red-500":"#ef4444","cyan-500":"#06b6d4","pink-500":"#ec4899","amber-500":"#f59e0b",
+};
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -30,6 +36,9 @@ export default async function SenadoDetailPage({ params }: PageProps) {
   }
 
   const comision = comisiones.find((c) => c.id.toString() === miembro.commission_id);
+  const comisionIdx = comisiones.findIndex((c) => c.id === comision?.id);
+  const comisionColorClass = COMMISSION_COLORS[Math.max(0, comisionIdx) % COMMISSION_COLORS.length];
+  const shadowColor = SHADOW_HEX[comisionColorClass] ?? "#3b82f6";
   const asistenciaPct = miembro.porcentajeAsistencia ?? 0;
   const asists = miembro.totalAsistencias ?? 0;
   const total = miembro.totalSesiones ?? 0;
@@ -59,10 +68,10 @@ export default async function SenadoDetailPage({ params }: PageProps) {
       </div>
 
       {/* Card Principal - Estilo comisión */}
-      <div className="rounded-2xl bg-white border border-gray-200 shadow-sm overflow-hidden flex mb-8">
-        {/* Borde izquierdo */}
-        <div className="w-1 bg-blue-500" />
-        
+      <div
+        className="rounded-none bg-white border border-black overflow-hidden flex mb-8"
+        style={{ boxShadow: `5px 5px 0px 0px ${shadowColor}` }}
+      >
         {/* 40% Izquierda - Foto y datos básicos */}
         <div className="w-2/5 p-6 bg-gray-50 flex flex-col items-center text-center">
           {miembro.image ? (
@@ -151,11 +160,11 @@ export default async function SenadoDetailPage({ params }: PageProps) {
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex-1 h-6 rounded-full overflow-hidden flex">
                   <div 
-                    className="h-full bg-green-500"
+                    className="h-full bg-green-200 bar-striped"
                     style={{ width: `${asistenciaPct}%` }}
                   />
                   <div 
-                    className="h-full bg-red-400"
+                    className="h-full bg-red-200 bar-striped"
                     style={{ width: `${100 - asistenciaPct}%` }}
                   />
                 </div>
@@ -163,16 +172,16 @@ export default async function SenadoDetailPage({ params }: PageProps) {
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="p-2 rounded-lg bg-green-50">
-                  <p className="text-xl font-bold text-green-600">{asists}</p>
-                  <p className="text-xs text-green-600">Asistencias</p>
+                  <p className="text-xl font-bold text-black">{asists}</p>
+                  <p className="text-xs text-black">Asistencias</p>
                 </div>
                 <div className="p-2 rounded-lg bg-red-50">
-                  <p className="text-xl font-bold text-red-500">{inasistencias}</p>
-                  <p className="text-xs text-red-500">Inasistencias</p>
+                  <p className="text-xl font-bold text-black">{inasistencias}</p>
+                  <p className="text-xs text-black">Inasistencias</p>
                 </div>
                 <div className="p-2 rounded-lg bg-gray-50">
-                  <p className="text-xl font-bold text-gray-600">{sesionesTotalesPeriodo}</p>
-                  <p className="text-xs text-gray-500">Total Sesiones</p>
+                  <p className="text-xl font-bold text-black">{sesionesTotalesPeriodo}</p>
+                  <p className="text-xs text-black">Total Sesiones</p>
                 </div>
               </div>
             </div>
@@ -200,25 +209,25 @@ export default async function SenadoDetailPage({ params }: PageProps) {
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex-1 h-6 rounded-full overflow-hidden flex">
                   <div 
-                    className="h-full bg-green-500"
+                    className="h-full bg-green-200 bar-striped"
                     style={{ width: `${asistenciaDesdeIngresoPct}%` }}
                   />
-                  <div className="h-full bg-red-400" style={{ width: `${100 - asistenciaDesdeIngresoPct}%` }} />
+                  <div className="h-full bg-red-200 bar-striped" style={{ width: `${100 - asistenciaDesdeIngresoPct}%` }} />
                 </div>
                 <span className="text-sm font-bold text-gray-700">{asistenciaDesdeIngresoPct}%</span>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="p-2 rounded-lg bg-green-50">
-                  <p className="text-xl font-bold text-green-600">{asists}</p>
-                  <p className="text-xs text-green-600">Asistencias</p>
+                  <p className="text-xl font-bold text-black">{asists}</p>
+                  <p className="text-xs text-black">Asistencias</p>
                 </div>
                 <div className="p-2 rounded-lg bg-red-50">
-                  <p className="text-xl font-bold text-red-500">{sesionesDesdeIngreso - asists}</p>
-                  <p className="text-xs text-red-500">Inasistencias</p>
+                  <p className="text-xl font-bold text-black">{sesionesDesdeIngreso - asists}</p>
+                  <p className="text-xs text-black">Inasistencias</p>
                 </div>
                 <div className="p-2 rounded-lg bg-gray-50">
-                  <p className="text-xl font-bold text-gray-600">{sesionesDesdeIngreso}</p>
-                  <p className="text-xs text-gray-500">Sesiones desde ingreso</p>
+                  <p className="text-xl font-bold text-black">{sesionesDesdeIngreso}</p>
+                  <p className="text-xs text-black">Sesiones desde ingreso</p>
                 </div>
               </div>
             </div>
@@ -243,15 +252,15 @@ export default async function SenadoDetailPage({ params }: PageProps) {
             <div className="flex items-center gap-4 mb-4">
               <div className="flex-1 h-6 rounded-full overflow-hidden flex">
                 <div 
-                  className="h-full bg-green-500"
+                  className="h-full bg-green-200 bar-striped"
                   style={{ width: totalVotos > 0 ? `${(votosSi / totalVotos) * 100}%` : "0%" }}
                 />
                 <div 
-                  className="h-full bg-red-500"
+                  className="h-full bg-red-200 bar-striped"
                   style={{ width: totalVotos > 0 ? `${(votosNo / totalVotos) * 100}%` : "0%" }}
                 />
                 <div 
-                  className="h-full bg-gray-400"
+                  className="h-full bg-gray-300 bar-striped"
                   style={{ width: totalVotos > 0 ? `${(abst / totalVotos) * 100}%` : "0%" }}
                 />
               </div>
@@ -261,20 +270,20 @@ export default async function SenadoDetailPage({ params }: PageProps) {
             {/* Leyenda y números */}
             <div className="grid grid-cols-4 gap-3 text-center">
               <div className="p-2 rounded-lg bg-green-50">
-                <p className="text-xl font-bold text-green-600">{votosSi}</p>
-                <p className="text-xs text-green-600">Votos Si</p>
+                <p className="text-xl font-bold text-black">{votosSi}</p>
+                <p className="text-xs text-black">Votos Si</p>
               </div>
               <div className="p-2 rounded-lg bg-red-50">
-                <p className="text-xl font-bold text-red-500">{votosNo}</p>
-                <p className="text-xs text-red-500">Votos No</p>
+                <p className="text-xl font-bold text-black">{votosNo}</p>
+                <p className="text-xs text-black">Votos No</p>
               </div>
               <div className="p-2 rounded-lg bg-gray-50">
-                <p className="text-xl font-bold text-gray-500">{abst}</p>
-                <p className="text-xs text-gray-500">Abstenciones</p>
+                <p className="text-xl font-bold text-black">{abst}</p>
+                <p className="text-xs text-black">Abstenciones</p>
               </div>
               <div className="p-2 rounded-lg bg-blue-50">
-                <p className="text-xl font-bold text-blue-600">{totalVotos}</p>
-                <p className="text-xs text-blue-600">Total Votaciones</p>
+                <p className="text-xl font-bold text-black">{totalVotos}</p>
+                <p className="text-xs text-black">Total Votaciones</p>
               </div>
             </div>
           </div>

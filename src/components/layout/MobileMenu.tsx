@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "./LayoutShell";
@@ -36,9 +37,13 @@ export function MobileMenu({ isOpen, onClose, pathname, navItems }: MobileMenuPr
       <nav className="absolute inset-y-0 right-0 w-72 bg-white shadow-2xl rounded-l-3xl">
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gray-900">
-              <span className="text-xs font-bold text-[#c4e615]">E</span>
-            </div>
+            <Image
+              src="/Gemini_Generated_Image_ipqgbsipqgbsipqg.png"
+              alt={APP_NAME}
+              width={32}
+              height={32}
+              className="rounded-xl"
+            />
             <span className="text-lg font-bold text-gray-900">{APP_NAME}</span>
           </div>
           <button

@@ -1,23 +1,12 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { CandidatoCompleto, ScoreTransparencia, EoroScoreCache } from "@/lib/types";
-import {
-  getPresidenciales2026,
-  getPresidencialById as getMockPresidencialById,
-} from "@/data/mock/presidenciales-2026";
 
 export async function getAllPresidenciales(): Promise<CandidatoCompleto[]> {
-  const [mock, supabaseResults] = await Promise.all([
-    Promise.resolve(getPresidenciales2026()),
-    getPresidencialesFromSupabase(),
-  ]);
-  return [...supabaseResults, ...mock];
+  return getPresidencialesFromSupabase();
 }
 
 export async function getPresidencialById(id: string): Promise<CandidatoCompleto | null> {
-  const mock = getMockPresidencialById(id);
-  if (mock) return mock;
-
   const supabase = await createClient();
   const { data: persona } = await supabase
     .schema("eoro")

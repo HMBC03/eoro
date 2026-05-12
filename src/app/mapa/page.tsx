@@ -1,4 +1,4 @@
-import { getDepartmentStatsArray, getPresidenciales2026 } from "@/lib/data/mapa";
+import { getDepartmentStatsArray } from "@/lib/data/mapa";
 import MapaClient from "./MapaClient";
 import { isModuleVisible } from "@/lib/data/modulos";
 import { ModuleDisabled } from "@/components/ui/ModuleDisabled";
@@ -9,12 +9,11 @@ export default async function MapaPage() {
   }
 
   const statsArray = getDepartmentStatsArray();
-  const allCandidatos = getPresidenciales2026();
 
   return (
     <MapaClient
       statsArray={statsArray}
-      allCandidatos={allCandidatos}
+      allCandidatos={[]}
     />
   );
 }

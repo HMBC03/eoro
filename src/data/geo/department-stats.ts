@@ -2,7 +2,6 @@
 // Department statistics aggregated from real candidate data
 // ============================================================
 
-import { getPresidenciales2026 } from "@/data/mock/presidenciales-2026";
 import { DEPARTMENT_MAP, getDeptByNombre } from "./department-map";
 
 export type MapMetric = "candidatos" | "contratos" | "alertas";
@@ -25,7 +24,7 @@ export interface DepartmentStats {
 let _statsMap: Map<string, DepartmentStats> | null = null;
 
 function buildStats(): Map<string, DepartmentStats> {
-  const candidatos = getPresidenciales2026();
+  const candidatos: any[] = [];
 
   const byDept = new Map<string, typeof candidatos>();
   for (const c of candidatos) {

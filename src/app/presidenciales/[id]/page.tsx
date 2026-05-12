@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import { getPresidencialById } from "@/lib/data/presidenciales";
-import { getDynastyData } from "@/data/mock/presidenciales-2026";
 import { getHistorialForPersona, getEvaluacionesForPersona } from "@/lib/data/eoro-score";
 import { createClient } from "@/lib/supabase/server";
 import PresidencialDetailClient from "./PresidencialDetailClient";
-import type { DynastyData } from "@/lib/data/dynasty";
 
 export default async function PresidencialPerfilPage({
   params,
@@ -19,20 +17,6 @@ export default async function PresidencialPerfilPage({
     getHistorialForPersona(id),
     getEvaluacionesForPersona(id),
   ]);
-
-  const rawDynasty = getDynastyData(id);
-  let dynastyData: DynastyData | null = null;
-  if (rawDynasty) {
-    dynastyData = {
-      nodes: rawDynasty.nodes,
-      edges: rawDynasty.edges.map((e, i) => ({
-        id: `dyn-e-${i}`,
-        source: e.source,
-        target: e.target,
-        relation: e.relation,
-      })),
-    };
-  }
 
   const familiarIds = presidencial.vinculos.map((v) =>
     v.persona_a_id === id ? v.persona_b_id : v.persona_a_id
@@ -54,7 +38,7 @@ export default async function PresidencialPerfilPage({
   return (
     <PresidencialDetailClient
       presidencial={presidencial}
-      dynastyData={dynastyData}
+      dynastyData={null}
       familiarMap={familiarMap}
       eoroHistorial={eoroHistorial}
       eoroEvaluaciones={eoroEvaluaciones}

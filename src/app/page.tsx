@@ -97,38 +97,43 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative overflow-hidden -mt-[96px]">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://4kwallpapers.com/images/walls/thumbs_3t/3214.jpg"
-            alt="Colombia"
-            fill
-            className="object-cover object-top"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-[#f5f5f0]" />
-        </div>
+      <section className="-mt-[96px] relative overflow-hidden" style={{ backgroundColor: "#F8F8F8" }}>
+        <div
+          className="absolute w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{ top: "-15%", left: "-5%", backgroundColor: "#c4e615", opacity: 0.25, filter: "blur(120px)" }}
+        />
+        <div
+          className="absolute w-[350px] h-[350px] rounded-full pointer-events-none"
+          style={{ top: "60%", right: "-8%", backgroundColor: "#003893", opacity: 0.2, filter: "blur(120px)" }}
+        />
+        <div
+          className="absolute w-[300px] h-[300px] rounded-full pointer-events-none"
+          style={{ bottom: "-10%", left: "35%", backgroundColor: "#CE1126", opacity: 0.15, filter: "blur(120px)" }}
+        />
+        <div
+          className="absolute bottom-0 left-0 right-0 h-40 z-[1] pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, transparent, #F8F8F8)" }}
+        />
 
-        <div className="relative z-10 px-6 pt-28 pb-28 md:pt-36 md:pb-36">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="max-w-3xl">
-<span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/90 px-4 py-1.5 text-sm font-semibold text-white mb-6">
-                <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                {diasParaElecciones > 0 ? `Faltan ${diasParaElecciones} días para las elecciones` : "Elecciones en curso"}
-              </span>
-              <h1 className="text-4xl font-light text-white leading-tight md:text-6xl lg:text-7xl">
-                Centro de monitoreo de
-                <br />
-                <span className="font-bold">recursos públicos.</span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-white/70 leading-relaxed">
-                Seguimiento en tiempo real a cómo se administran los recursos del Estado. 
-                Conforme lo reportan las entidades: presupuesto, contratos, recaudo y ejecución.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="relative z-10 px-6 pt-40 pb-40 md:pt-48 md:pb-48">
+          <div className="mx-auto max-w-[1400px] flex flex-col items-center text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-1.5 text-sm font-semibold text-white mb-6">
+              <span className="h-2 w-2 rounded-full bg-[#c4e615] animate-pulse" />
+              {diasParaElecciones > 0 ? `Faltan ${diasParaElecciones} días para las elecciones` : "Elecciones en curso"}
+            </span>
+            <h1 className="text-4xl font-light text-gray-900 leading-tight md:text-6xl lg:text-7xl" style={{ fontFamily: "var(--font-manrope), sans-serif" }}>
+              Centro de monitoreo de
+              <br />
+              <span className="font-bold">recursos públicos.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-gray-600 leading-relaxed">
+              Seguimiento en tiempo real a cómo se administran los recursos del Estado.
+              Conforme lo reportan las entidades: presupuesto, contratos, recaudo y ejecución.
+            </p>
+              <div className="mt-8 flex flex-wrap justify-center items-center gap-3">
                 <Link
                   href="/gobierno"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#c4e615] px-7 py-3.5 text-sm font-semibold text-gray-900 transition-all hover:bg-[#d4f025] hover:shadow-lg hover:shadow-[#c4e615]/20"
+                  className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-gray-800 hover:shadow-lg hover:shadow-gray-900/20"
                 >
                   Explorar Entidades
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -137,24 +142,23 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/presidenciales"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 text-sm font-medium text-white transition-all hover:bg-white/10"
+                  className="inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white/80 px-7 py-3.5 text-sm font-medium text-gray-800 transition-all hover:bg-white hover:border-gray-400"
                 >
                   Ver Presidenciales
                 </Link>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Sections grid */}
-      <section className="px-6 py-16">
+      <section className="px-6 pt-0 pb-16" style={{ background: "#F8F8F8" }}>
         <div className="mx-auto max-w-[1400px]">
-          <div className="mb-8">
-            <h2 className="text-2xl font-light text-gray-900">
-              Recursos públicos por <span className="font-bold">entidad</span>
-            </h2>
-            <p className="mt-2 text-sm text-gray-500 italic">
+            <div className="mb-8">
+              <h2 className="text-2xl font-light text-gray-900">
+                Recursos públicos por <span className="font-bold">entidad</span>
+              </h2>
+              <p className="mt-2 text-sm text-gray-500 italic">
               "Seguimos el desempeño de funcionarios electos — el núcleo de la veeduría ciudadana"
             </p>
             <p className="mt-1 text-sm text-gray-400">
@@ -183,11 +187,11 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How it works */}
+        {/* How it works */}
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-[1400px]">
           <div className="rounded-none bg-white border border-black p-8 md:p-12 shadow-[5px_5px_0px_0px_#000]">

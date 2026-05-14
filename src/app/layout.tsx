@@ -4,6 +4,7 @@ import { Manrope } from "next/font/google";
 import { LayoutShell } from "@/components/layout/LayoutShell";
 import { getModuleConfig } from "@/lib/data/modulos";
 import { NAV_ITEMS } from "@/lib/constants";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -80,6 +81,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} antialiased`}
       >
         <LayoutShell navItems={visibleNavItems}>{children}</LayoutShell>
+        <Analytics />
       </body>
     </html>
   );
